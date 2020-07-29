@@ -6,6 +6,8 @@ use App\Expediente;
 use Illuminate\Http\Request;
 use PDF;
 
+use Luecano\NumeroALetras\NumeroALetras;
+
 class ExpedienteController extends Controller
 {
     public function index(Request $request)
@@ -92,4 +94,91 @@ class ExpedienteController extends Controller
        
         return $nombres ." ". $apellidos;
     }
+
+    public function numeroComiteEnletras($numeroComiteEnLetras)
+    {
+        $numeroComite = intval(preg_replace('/[^0-9]+/', '', $numeroComiteEnLetras), 10);
+        $formatter = new NumeroALetras;
+        $numeroEnLetras=$formatter->toWords($numeroComite);
+        return $numeroEnLetras."AVA";
+    }
+
+
+    public function fechaParaImprimirContrato($fecha){
+        $anio=substr($fecha,0,4);
+        $mes=substr($fecha,-5,-3);
+        $dia=substr($fecha,-2);
+
+        $formatter = new NumeroALetras;
+        $diaEnLetras=$formatter->toWords($dia);
+
+        $formatterAnio = new NumeroALetras;
+        $anioEnLetras=$formatterAnio->toWords($anio);
+
+        //dd($diaEnLetras);
+
+        return $dia." (".$diaEnLetras.") DE ".$this->nombreMes($mes)." DEL AÑO ". $anio ." (".$anioEnLetras.".)";
+
+
+    }
+
+    public function nombreMes($mes){
+        switch ($mes) {
+            case 1:
+                return "ENERO";
+              break;
+            case 2:
+                return "FEBRERO";
+              break;
+            case 3:
+                return "MARZO";
+              break;
+              case 4:
+                return "ABRIL";
+              break;
+
+              case 5:
+                return "MAYO";
+              break;
+
+              case 6:
+                return "JUNIO";
+              break;
+
+              case 7:
+                return "JULIO";
+              break;
+
+              case 8:
+                return "AGOSTO";
+              break;
+
+              case 9:
+                return "SEPTIEMBRE";
+              break;
+
+              case 10:
+                return "OCTUBRE";
+              break;
+
+              case 11:
+                return "NOVIEMBRE";
+              break;
+
+              case 12:
+                return "DICIEMBRE";
+              break;
+
+
+          
+            
+          }
+    }
+
+      public function    prueba(){
+        $var=0;
+        dd($var);
+        }
+
+    
 }
