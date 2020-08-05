@@ -18,3 +18,5 @@ Route::get('/', function () {
 
 Route::get('expedientes', 'ExpedienteController@index')->name('admin.expedientes.index');
 Route::get('descargar/contrato/{id}', 'ExpedienteController@descargarContrato')->name('admin.expedientes.contrato');
+
+Route::get('descargar/instruccion/{id}', 'ExpedienteController@instruccionAlNotario')->name('admin.expedientes.instruccion');

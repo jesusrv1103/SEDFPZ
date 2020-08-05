@@ -102,8 +102,12 @@
                         {{$expediente->estatus->estatus}}
                         @endisset
                     </td>
-                    <td><a href="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"></i> </a></td>
-                </tr>
+                    <td>
+                        <a href="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"></i> </a>
+                        <a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"></i> </a>
+                    </td>
+               
+                    </tr>
                 @endforeach
             </tbody>
             <tfoot>

@@ -68,7 +68,7 @@ class Expediente extends Model
 
     public function conyAvalNacionalidad()
     {
-        return $this->belongsTo(Nacionalidad::class,'conav_nacionyaval','id_nacionalidad');
+        return $this->belongsTo(Nacionalidad::class,'conav_naciconyaval','id_nacionalidad');
 
     }
 
