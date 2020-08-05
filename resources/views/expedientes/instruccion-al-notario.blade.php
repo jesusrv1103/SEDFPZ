@@ -179,6 +179,9 @@ $nacionalidadConyugueAval=ucwords(strtolower($expediente->conyAvalNacionalidad->
 
 $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
+$telefonoNegocio=$expediente->telnegocio;
+
+
 
 
 
@@ -228,7 +231,7 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
         body {
             font-family: "Arial", serif;
-            font-size: 10px;
+            font-size: 12px;
             margin: 12mm 12mm 12mm 12mm;
         }
     </style>
@@ -266,7 +269,6 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
         @if($expediente->relegal_nombre !="")
         <tr>
-
             <td width="20%" BGCOLOR="#EAE5E5">
 
                 <strong>
@@ -288,6 +290,12 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
             <td>
                 {{$representanteLegal}}
             </td>
+            <td>
+                RFC
+            </td>
+            <td>
+              {{$rfcRepresentanteLegal}}
+            </td>
 
         </tr>
 
@@ -305,6 +313,14 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
             <td>
                 {{$nombre_solicitante}}
             </td>
+
+            <td BGCOLOR="#EAE5E5">
+                <strong>
+                    R.F.C
+                </strong>
+
+            </td>
+            <td>{{$rfcSolicitante}}</td>
         </tr>
         @endif
 
@@ -317,6 +333,15 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
             </td>
             <td>
                 {{$domicilioNegocio}}
+            </td>
+            <td BGCOLOR="#EAE5E5">
+                <strong>
+                    Telefono
+                </strong>
+
+            </td>
+            <td>
+                {{$telefonoNegocio}}
             </td>
         </tr>
 
@@ -332,6 +357,8 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
             <td>
                 {{$domicilioRepresentanteLegal}}
             </td>
+
+           
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -365,27 +392,19 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
             <td>
                 {{$domicilioSolicitante}}
             </td>
-        </tr>
-        <tr>
-            <td BGCOLOR="#EAE5E5">
-                <strong>
-                    R.F.C
-                </strong>
 
-            </td>
-            <td>{{$rfcSolicitante}}</td>
-        </tr>
-        <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
                     Telefono
                 </strong>
 
             </td>
-            <td BGCOLOR="#EAE5E5">
+            <td>
+
                 {{$telefonoSolicitante}}
             </td>
         </tr>
+       
         @endif
 
     </table>
@@ -672,6 +691,8 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
                 </strong>
             </td>
             <td>{{$nombre_solicitante}}</td>
+
+            
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -990,6 +1011,8 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
 
 
+
+
     <p ALIGN="justify">
         @if($representanteLegal== "")
         A).- Se Anexan Copias de Actas de Nacimiento, Matrimonio,Comprobante de Domicilio, R.FC y CURP.<br>
@@ -1027,10 +1050,7 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
 
 
-    <p>
-    
-   
-    </p>
+  
 
 
 

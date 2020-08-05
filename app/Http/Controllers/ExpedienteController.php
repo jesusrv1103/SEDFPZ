@@ -105,7 +105,7 @@ class ExpedienteController extends Controller
     return $numeroEnLetras . "AVA";
   }
 
- 
+
 
 
   public function fechaParaImprimirContrato($fecha)
@@ -234,16 +234,31 @@ class ExpedienteController extends Controller
     $expediente = Expediente::where('id_expediente', '=', $id_expediente)
       ->first();
 
-      if($expediente->garhipo_nombre_del_aval){
 
+    if ($expediente->relegal_nombre != "") {
+      if ($expediente->relegal_nombre != $expediente->garhipo_nombre_del_aval) {
+        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+          ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+          ->setPaper('legal');
+
+        return $pdf->download('Carta Al Notario.pdf');
       }
+    } elseif ($expediente->garhipo_nombre_del_aval != $expediente->nombre_solicitante) {
 
-    $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+
+      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+        ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+        ->setPaper('legal');
+
+      return $pdf->download('Carta Al Notario.pdf');
+    } else {
+      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
       ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-      ->setPaper('a4', 'portrait');
-
-    return $pdf->download('Carta Al Notario.pdf');
+      ->setPaper('legal', 'portrait');
+    }
   }
+
+
 
   public function imprimirFechaAvaluo($fechaAvaluo)
   {
@@ -252,5 +267,4 @@ class ExpedienteController extends Controller
     $dia = substr($fechaAvaluo, -2);
     return $dia . " De " . ucwords(strtolower($this->nombreMes($mes))) . " Del " . $anio;
   }
-
 }
