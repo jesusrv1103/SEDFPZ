@@ -30,7 +30,8 @@ ucwords(strtolower($expediente->genesol_colonia)).", Código Postal "
 .$expediente->genesol_codigo_postal.", "
 .ucwords(strtolower($expediente->genesol_municipio)). " Zacatecas.";
 //Telefono del Solicitante
-$telefonoSolicitante=$expediente->telcel;
+$telefonoCelularSolicitante=$expediente->telcel;
+$telefonoParticularSolicitante=$expediente->telparticular;
 //Monto del Prestamo
 $montoPrestamo=number_format(floatval($expediente->monto),2);
 //Meses del Plazo
@@ -40,6 +41,10 @@ $periodoDeGracia=$expediente->gracia;
 
 //Interes Ordinario
 $interesOrdinario= $expediente->productoCredito->crefpanual ."% Anual";
+
+$sexoSolicitante =substr($curpSolicitante,-8,1);
+
+
 
 
 
@@ -66,6 +71,9 @@ $domicilioRepresentanteLegal= "Calle " . ucwords(strtolower( $expediente->relega
 ucwords(strtolower($expediente->relegal_colonia)).
 ", Codigo Postal ".$expediente->relegal_codigo_postal.", ".ucwords(strtolower($expediente->relegal_municipio))." Zacatecas";
 
+$sexoRepresentanteLegal= substr($curpRepresentanteLegal,-8,1);
+
+
 
 //Coyugue representante legal
 
@@ -81,6 +89,9 @@ ucwords(strtolower($expediente->conyrepleg_colonia)).
 ", Codigo Postal ".$expediente->conyrepleg_codpos.", ".ucwords(strtolower($expediente->conyrepleg_municipio))." Zacatecas";
 
 $conyugueRepresentanteLegalCurp=$expediente->conyrepleg_curp;
+$sexoConyugueRepresentanteLegal= substr($expediente->conyrepleg_curp,-8,1);
+
+
 
 
 //Datos de garant Hipotecario
@@ -110,9 +121,12 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 //Tipo de credito
 $tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->producto;
 
-$actividadNegocio= $expediente->actividad_economica;
+$productoCredito= $expediente->productoCredito->producto;
+
+
+$actividadNegocio= ucwords(strtolower($expediente->actividad_economica));
 //Destino Prestamo
-$destinoPrestamo = $expediente->destino;
+$destinoPrestamo = ucwords(strtolower($expediente->destino));
 //Descripcion Inmueble
 $descripcionInmueble=ucwords(strtolower($expediente->garantia_descrbien_inmueble))
 ." Ubicada en la Calle ".ucwords(strtolower($expediente->garantia_domici))." ".$expediente->garantia_dom_numero.
@@ -121,7 +135,7 @@ $descripcionInmueble=ucwords(strtolower($expediente->garantia_descrbien_inmueble
 ucwords(strtolower($expediente->garantia_localidad)).", ".
 ucwords(strtolower($expediente->garantia_municipio)).
 ", con una Superficie de ".$expediente->garantia_superf_terreno_mt." m²".
-" con un Valor Comercial de ".number_format(floatval($expediente->garantia_valor),2).",
+" con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
 Según el Avaluo Practicado por el ".ucwords(strtolower($expediente->garantia_perito_valuador))
 . " de Fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion);
 
@@ -131,7 +145,11 @@ $numeroDeComite= intval(preg_replace('/[^0-9]+/', '', $expediente->numcomite), 1
 $numeroDeComite= ucfirst(strtolower($numeroDeComite ));
 $numeroComite =$expediente->numcomite;
 
-$tipoReunion = strpos($numeroComite, "e") === false ? "Reunión Ordinaria del H. Comité Técnico" : "Reunión Extraodinaria del H. Comité Técnico";
+
+
+$tipoReunion = strpos($numeroComite, "E") === false ? "Reunión Ordinaria del H. Comité Técnico" : "Reunión Extraodinaria del H. Comité Técnico";
+
+
 $fechaComite= $metodo->imprimirFechaNacimiento($expediente->fecha_reunion_comite);
 
 $interesMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpmensualmora), 10);
@@ -145,19 +163,13 @@ $porcentajeInteresMoral = $interesMoral %10;
 }
 
 
-$interesAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpanualmora), 10);
+
+$porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpanualmora), 10);
 
 
 
-$parteEnteraInteresAnualMoral= intval( $interesMoral/10);
 
 
-
-if($parteEnteraInteresAnualMoral >=1 ){
-$porcentajeInteresAnualMoral = intval( $interesAnualMoral/10) . ".". $interesAnualMoral%10;
-} else {
-$porcentajeInteresAnualMoral = $interesAnualMoral %10;
-}
 
 
 
@@ -180,6 +192,11 @@ $nacionalidadConyugueAval=ucwords(strtolower($expediente->conyAvalNacionalidad->
 $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
 $telefonoNegocio=$expediente->telnegocio;
+$sexoGaranteHipotecario = substr($garanteHipotecarioCurp,-8,1);
+$sexoConyugueAval= substr($curpConyugueAval,-8,1);
+
+
+
 
 
 
@@ -245,17 +262,18 @@ $telefonoNegocio=$expediente->telnegocio;
     </div>
 
     <p ALIGN="right">
-        <strong>Asunto: &nbsp; Instrución para Contrato</strong><br>
-        FPZ/0648/2020<br>
+        <strong>Asunto: </strong> Instrución
+        para Contrato FPZ/0648/2020
+        <br>
         Zacatecas, Zac, a 03 de Julio de 2020
     </p>
 
     <p ALIGN="left">
         <strong>
-        Lic. José Guadalupe Estrada Rodriguez <br>
-        Notario Público No 46<br>
-        Zacatecas, Zacatecas <br>
-        Presente<br>
+            Lic. José Guadalupe Estrada Rodriguez <br>
+            Notario Público No 46<br>
+            Zacatecas, Zacatecas <br>
+            Presente<br>
         </strong>
     </p>
 
@@ -294,7 +312,7 @@ $telefonoNegocio=$expediente->telnegocio;
                 RFC
             </td>
             <td>
-              {{$rfcRepresentanteLegal}}
+                {{$rfcRepresentanteLegal}}
             </td>
 
         </tr>
@@ -336,12 +354,13 @@ $telefonoNegocio=$expediente->telnegocio;
             </td>
             <td BGCOLOR="#EAE5E5">
                 <strong>
-                    Telefono
+                    Teléfono
                 </strong>
 
             </td>
             <td>
                 {{$telefonoNegocio}}
+
             </td>
         </tr>
 
@@ -358,7 +377,7 @@ $telefonoNegocio=$expediente->telnegocio;
                 {{$domicilioRepresentanteLegal}}
             </td>
 
-           
+
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -372,7 +391,7 @@ $telefonoNegocio=$expediente->telnegocio;
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
-                    Telefono
+                    Teléfono
                 </strong>
 
             </td>
@@ -395,16 +414,17 @@ $telefonoNegocio=$expediente->telnegocio;
 
             <td BGCOLOR="#EAE5E5">
                 <strong>
-                    Telefono
+                    Teléfono
                 </strong>
 
             </td>
             <td>
 
-                {{$telefonoSolicitante}}
+                {{$telefonoParticularSolicitante}}
+
             </td>
         </tr>
-       
+
         @endif
 
     </table>
@@ -431,6 +451,25 @@ $telefonoNegocio=$expediente->telnegocio;
                 Meses <br>
             </th>
 
+            @if($productoCredito =="PLAN E-125")
+
+
+            <th BGCOLOR="#EAE5E5">
+                Gracia a <br>
+                Interés<br>
+                (Ordinario)<br>
+                4 meses
+            </th>
+            <th BGCOLOR="#EAE5E5">
+                Interés<br>
+                (Ordinario)
+
+                <br>
+
+            </th>
+
+            @else
+
             <th BGCOLOR="#EAE5E5">
                 Interés<br>
                 (Ordinario)<br>
@@ -438,9 +477,13 @@ $telefonoNegocio=$expediente->telnegocio;
             </th>
             <th BGCOLOR="#EAE5E5">
                 Interés<br>
-                (Ordinario)<br>
-                32 meses
+                (Ordinario
+                32 meses)
+                <br>
+
             </th>
+            @endif
+
 
             <th BGCOLOR="#EAE5E5">
                 Interés <br>
@@ -488,9 +531,27 @@ $telefonoNegocio=$expediente->telnegocio;
                 </center>
 
             </td>
+
+
+            @if($productoCredito =="PLAN E-125")
             <td>
                 <center>
-                    {{$porcentajeInteresAnualMoral}}
+                    4
+                </center>
+
+            </td>
+            <td>
+
+                <center>
+                    5% Anual
+                </center>
+
+            </td>
+
+            @else
+            <td>
+                <center>
+                    {{$porcentajeInteresAnualMoral}} %
                 </center>
 
             </td>
@@ -501,6 +562,8 @@ $telefonoNegocio=$expediente->telnegocio;
                 </center>
 
             </td>
+            @endif
+
             <td>
                 <center>
                     0%
@@ -606,7 +669,15 @@ $telefonoNegocio=$expediente->telnegocio;
 
             @if($conyugueRepresentanteLegal != "" )
             <td>
-                {{$conyugueRepresentanteLegalEstadoCivil}}
+                @if($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Casado")
+                Casado
+                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Casado")
+                Casada
+                @elseif($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Soltero")
+                Soltero
+                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Soltero")
+                Soltera
+                @endif
             </td>
             @endif
 
@@ -683,7 +754,7 @@ $telefonoNegocio=$expediente->telnegocio;
     @else
 
     <table width="70%" border="1">
-        <caption> Acreditado   </caption>
+        <caption> Acreditado </caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -692,7 +763,7 @@ $telefonoNegocio=$expediente->telnegocio;
             </td>
             <td>{{$nombre_solicitante}}</td>
 
-            
+
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -708,7 +779,20 @@ $telefonoNegocio=$expediente->telnegocio;
                     Estado Civil
                 </strong>
             </td>
-            <td>{{$estadoCivilSolicitante}}</td>
+            <td>
+
+                @if($sexoSolicitante == "H" && $estadoCivilSolicitante=="Casado")
+                Casado
+                @elseif($sexoSolicitante == "M" && $estadoCivilSolicitante=="Casado")
+                Casada
+                @elseif($sexoSolicitante == "H" && $estadoCivilSolicitante=="Soltero")
+                Soltero
+                @elseif($sexoSolicitante == "M" && $estadoCivilSolicitante=="Soltero")
+                Soltera
+                @endif
+
+            
+            </td>
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -758,9 +842,9 @@ $telefonoNegocio=$expediente->telnegocio;
     @if($representanteLegal !="")
     @if($garanteHipotecario != $representanteLegal)
 
-   
+
     <table width="70%" border="1">
-        <caption> Garante Hipotecario por Sociedad Conyugal  </caption>
+        <caption> Garante Hipotecario por Sociedad Conyugal </caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -788,7 +872,7 @@ $telefonoNegocio=$expediente->telnegocio;
             </td>
             @endif
 
-          
+
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -800,7 +884,18 @@ $telefonoNegocio=$expediente->telnegocio;
 
             @if($nombreConyugueAval != "" )
             <td>
-                {{$estadoCivilConyugueAval}}
+
+
+            @if($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Casado")
+                Casado
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Casado")
+                Casada
+                @elseif($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Soltero")
+                Soltero
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Soltero")
+                Soltera
+                @endif
+               
             </td>
             @endif
 
@@ -838,7 +933,7 @@ $telefonoNegocio=$expediente->telnegocio;
             </td>
             @endif
 
-          
+
         </tr>
 
 
@@ -884,10 +979,10 @@ $telefonoNegocio=$expediente->telnegocio;
 
     @if(empty($representanteLegal) )
     @if($garanteHipotecario != $representanteLegal)
-   
-   
+
+
     <table width="70%" border="1">
-        <caption> Garante Hipotecario por Sociedad Conyugal  </caption>
+        <caption> Garante Hipotecario por Sociedad Conyugal </caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -915,7 +1010,7 @@ $telefonoNegocio=$expediente->telnegocio;
             </td>
             @endif
 
-          
+
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -923,7 +1018,21 @@ $telefonoNegocio=$expediente->telnegocio;
                     Estado Civil
                 </strong>
             </td>
-            <td>{{$estadoCivilGaranteHipotecario}}</td>
+            <td>
+                
+
+
+            @if($sexoGaranteHipotecario == "H" && $estadoCivilGaranteHipotecario=="Casado")
+                Casado
+                @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Casado")
+                Casada
+                @elseif($sexoGaranteHipotecario == "H" && $estadoCivilGaranteHipotecario=="Soltero")
+                Soltero
+                @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Soltero")
+                Soltera
+                @endif
+        
+        </td>
 
             @if($nombreConyugueAval != "" )
             <td>
@@ -965,7 +1074,7 @@ $telefonoNegocio=$expediente->telnegocio;
             </td>
             @endif
 
-          
+
         </tr>
 
 
@@ -1015,13 +1124,13 @@ $telefonoNegocio=$expediente->telnegocio;
 
     <p ALIGN="justify">
         @if($representanteLegal== "")
-        A).- Se Anexan Copias de Actas de Nacimiento, Matrimonio,Comprobante de Domicilio, R.FC y CURP.<br>
-        B).- Se Anexan Copias de la Escritura, Certificado e Libertad de Gravamen, Avalúo y recibo de Pago de
+        A).- Se Anexan Copias de Actas de Nacimiento, Matrimonio, Comprobante de Domicilio, R.FC y CURP.<br>
+        B).- Se Anexan Copias de la Escritura, Certificado de Libertad de Gravamen, Avalúo y recibo de Pago de
         Predial.
         @else
         A).-Se anexan copias de Acta Constituitica y Actas de Asamblea Ordinarias
-        B).-Se anexan copias de acta de nacimiento, matrimonio, identificación, comprobante de domicilio, cédula de R.F.C y CURP
-        C).-Se anexan copias de la Escritura, Certificacion de libertad de gravamen, Avaluo y Recibo de pago de impuesto predial
+        B).-Se anexan copias de Acta de Nacimiento, Matrimonio, Identificación, Comprobante de Domicilio,Cédula de R.F.C y CURP
+        C).-Se anexan copias de la Escritura, Certificacion de Libertad de Gravamen, Avaluo y Recibo de Pago de Predial
         @endif
 
     </p>
@@ -1034,7 +1143,7 @@ $telefonoNegocio=$expediente->telnegocio;
 
 
     <p ALIGN="center">
-        ATENTAMENTE <br> <br>
+        Atentamente <br> <br>
         <strong>L.C Felipe Ignacio Ávalo Pérez </strong><br>
         Director
 
@@ -1050,7 +1159,7 @@ $telefonoNegocio=$expediente->telnegocio;
 
 
 
-  
+
 
 
 

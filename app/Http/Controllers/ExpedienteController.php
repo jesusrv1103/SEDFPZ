@@ -193,7 +193,7 @@ class ExpedienteController extends Controller
     $anio = substr($fechaNacimiento, 0, 4);
     $mes = substr($fechaNacimiento, -5, -3);
     $dia = substr($fechaNacimiento, -2);
-    return $dia . " De " . ucwords(strtolower($this->nombreMes($mes))) . " De " . $anio;
+    return $dia . " de " . ucwords(strtolower($this->nombreMes($mes))) . " del " . $anio;
   }
 
   public function imprimirFechaFirmaContrato()
