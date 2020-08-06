@@ -14,6 +14,7 @@ $rfcSolicitante=$expediente->genesol_rfc;
 $domicilioNegocio= ucwords(strtolower($expediente->negocio_domicilio))." ".
 " ".$expediente->negocio_dom_numero.", ".
 " ".ucwords(strtolower($expediente->negocio_colonia)).", ".
+"Código Postal ".$expediente->negocio_codigo_postal.
 ' '.ucwords(strtolower($expediente->localidadzac)).", "
 .ucwords(strtolower($expediente->municipio->municipio));
 
@@ -103,7 +104,8 @@ $garanteHipotecarioFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente-
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
 $garanteHipotecarioTelefono=$expediente->relegal_telefono_celular;
 
-$garanteHipotecarioDomicilio= "Calle " . ucwords(strtolower( $expediente->garhipo_domicilio_particular))." ".
+$garanteHipotecarioDomicilio= "Calle " . ucwords(strtolower( $expediente->garhipo_domicilio_particular))." Número ". 
+$expediente->garhipo_domicilio_numero.
 ", ".
 ucwords(strtolower($expediente->garhipo_colonia)).
 ", Codigo Postal ".$expediente->garhipo_codigo_postal.", ".ucwords(strtolower($expediente->garantia_municipio))." Zacatecas";
@@ -128,7 +130,7 @@ $actividadNegocio= ucwords(strtolower($expediente->actividad_economica));
 //Destino Prestamo
 $destinoPrestamo = ucwords(strtolower($expediente->destino));
 //Descripcion Inmueble
-$descripcionInmueble=ucwords(strtolower($expediente->garantia_descrbien_inmueble))
+$descripcionInmueble=ucwords(mb_strtolower($expediente->garantia_descrbien_inmueble))
 ." Ubicada en la Calle ".ucwords(strtolower($expediente->garantia_domici))." ".$expediente->garantia_dom_numero.
 ", ".ucwords(strtolower($expediente->garantia_colonia)).
 ", Codigo Postal ".ucwords(strtolower($expediente->garantia_cod_postal)).", ".
@@ -182,12 +184,13 @@ $fechaNacimientoConyugueAval =$fechaNacimientoSolicitante= $metodo->imprimirFech
 $conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_lugarnaconyuaval));
 $curpConyugueAval= $expediente->conav_curpconaval;
 
-$domicilioConyugueAval= "Calle " . ucwords(strtolower( $expediente->conyav_dompartconyuaval))." ".
+$domicilioConyugueAval= "Calle " . ucwords(strtolower( $expediente->conyav_dompartconyuaval))." Número ".
+$expediente->garhipo_domicilio_numero.
 ", ".
 ucwords(strtolower($expediente->conav_colconyugueaval))
 .", ".ucwords(strtolower($expediente->conav_municonyaval))." Zacatecas";
 
-$nacionalidadConyugueAval=ucwords(strtolower($expediente->conyAvalNacionalidad->nacionalidad));
+$nacionalidadConyugueAval=ucwords(strtolower(isset($expediente->conyAvalNacionalidad->nacionalidad)));
 
 $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
@@ -346,7 +349,7 @@ $sexoConyugueAval= substr($curpConyugueAval,-8,1);
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
-                    Domicilio Del Negocio
+                    Domicilio del Negocio
                 </strong>
             </td>
             <td>
@@ -1152,7 +1155,7 @@ $sexoConyugueAval= substr($curpConyugueAval,-8,1);
 
     <p ALIGN="justify" style="font-size: 12px">
         Boulevard Jóse López Portillo No. 220-9,
-        Fracc. Las Colinas, Zacateca Zac. C.p 98098,
+        Fracc. Las Colinas, Zacateca Zac. C.P 98098,
         Tel. 492 491 5034, Ext 36400 <br>
         www.fondoplata.zacatecas.gob.mx
     </p>
