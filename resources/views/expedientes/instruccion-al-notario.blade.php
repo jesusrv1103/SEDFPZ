@@ -187,7 +187,7 @@ $domicilioConyugueAval= "Calle " . ucwords(strtolower( $expediente->conyav_dompa
 ucwords(strtolower($expediente->conav_colconyugueaval))
 .", ".ucwords(strtolower($expediente->conav_municonyaval))." Zacatecas";
 
-$nacionalidadConyugueAval=ucwords(strtolower($expediente->conyAvalNacionalidad->nacionalidad));
+$nacionalidadConyugueAval=ucwords(strtolower(isset($expediente->conyAvalNacionalidad->nacionalidad)));
 
 $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
