@@ -1,14 +1,11 @@
 @inject('metodo','App\Http\Controllers\ExpedienteController')
 @php
 //Nombre del Solicitante
-$nombre_solicitante=!isset($representanteLegal) ? $expediente->nombre_solicitante : $metodo->conversionNombre($expediente->nombre_solicitante);
+$nombre_solicitante= $metodo->conversionNombre($expediente->nombre_solicitante);
 $nombreEmpresa= $expediente->nombre_solicitante;
 $nacionalidadSolicitante=ucwords(strtolower($expediente->solicitanteNacionalidad->nacionalidad));
 $estadoCivilSolicitante=ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->genesol_estado_civil)));
 $fechaNacimientoSolicitante= $metodo->imprimirFechaNacimiento($expediente->genesol_fecha_de_nacimiento);
-
-
-
 $curpSolicitante= $expediente->genesol_curp;
 
 //RFC del solicitante
@@ -99,15 +96,15 @@ $sexoConyugueRepresentanteLegal= substr($expediente->conyrepleg_curp,-8,1);
 
 
 //Datos de garant Hipotecario
-$garanteHipotecario=isset($expediente->garhipo_nombre_del_aval) ? $metodo->conversionNombre($expediente->garhipo_nombre_del_aval) : "";
+$garanteHipotecario=$metodo->conversionNombre($expediente->garhipo_nombre_del_aval);
 $estadoCivilGaranteHipotecario= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->garhipo_estado_civil)));
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
-$garanteHipotecarioNacionalidad=! isset($expediente->garanteHipNacionalidad->nacionalidad) ? "" : ucwords(strtolower($expediente->garanteHipNacionalidad->nacionalidad));
+$garanteHipotecarioNacionalidad= ucwords(strtolower($expediente->garanteHipNacionalidad->nacionalidad));
 $garanteHipotecarioFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente->garhipo_fecha_de_nacimiento);
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
 $garanteHipotecarioTelefono=$expediente->relegal_telefono_celular;
 
-$garanteHipotecarioDomicilio= "Calle " . ucwords(strtolower( $expediente->garhipo_domicilio_particular))." Número ".
+$garanteHipotecarioDomicilio= "Calle " . ucwords(strtolower( $expediente->garhipo_domicilio_particular))." Número ". 
 $expediente->garhipo_domicilio_numero.
 ", ".
 ucwords(strtolower($expediente->garhipo_colonia)).
@@ -129,13 +126,7 @@ $tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->produ
 $productoCredito= $expediente->productoCredito->producto;
 
 
-$actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);// ucwords(strtolower($expediente->actividad_economica));
-
-
-
-
-
-
+$actividadNegocio= ucwords(strtolower($expediente->actividad_economica));
 //Destino Prestamo
 $destinoPrestamo = ucwords(strtolower($expediente->destino));
 //Descripcion Inmueble
@@ -189,7 +180,7 @@ $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->
 //Nombre del conyugue del aval
 $nombreConyugueAval= $metodo->conversionNombre($expediente->conav_nombconyugaval);
 $estadoCivilConyugueAval =ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conav_estcivilconaval)));
-$fechaNacimientoConyugueAval =$metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
+$fechaNacimientoConyugueAval =$fechaNacimientoSolicitante= $metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
 $conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_lugarnaconyuaval));
 $curpConyugueAval= $expediente->conav_curpconaval;
 
@@ -199,8 +190,7 @@ $expediente->garhipo_domicilio_numero.
 ucwords(strtolower($expediente->conav_colconyugueaval))
 .", ".ucwords(strtolower($expediente->conav_municonyaval))." Zacatecas";
 
-$nacionalidadConyugueAval=isset($expediente->conyAvalNacionalidad->nacionalidad) ? ucwords(strtolower($expediente->conyAvalNacionalidad->nacionalidad)) : "";
-
+$nacionalidadConyugueAval=ucwords(strtolower(isset($expediente->conyAvalNacionalidad->nacionalidad)));
 
 $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
@@ -210,7 +200,19 @@ $sexoConyugueAval= substr($curpConyugueAval,-8,1);
 
 
 
-$idProductoCredito = $expediente->productoCredito->id_procredito;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -227,16 +229,24 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     <title>Instruccion al Notario</title>
 
     <style type="text/css">
-      
+        #topright {
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: block;
+            height: 125px;
+            width: 125px;
+            background: url(TRbanner.gif) no-repeat;
+            text-indent: -999em;
+            text-decoration: none;
+        }
+
         table {
             border-collapse: collapse;
         }
 
         html {
             margin: 0;
-          
-        
-        
         }
 
         body {
@@ -278,74 +288,43 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
     <table width="100%" border="1">
 
-
         @if($expediente->relegal_nombre !="")
-
         <tr>
-            <td width="20%" BGCOLOR="#EAE5E5" >
+            <td width="20%" BGCOLOR="#EAE5E5">
 
                 <strong>
                     Nombre de la empresa
                 </strong>
             </td>
-            <td >
+            <td>
                 {{$nombreEmpresa}}
             </td>
-            <td width="12%" BGCOLOR="#EAE5E5">
-                RFC
-            </td>
-            <td width="16%">
-
-            </td>
         </tr>
+
         <tr>
-            <td BGCOLOR="#EAE5E5"  >
+            <td BGCOLOR="#EAE5E5">
                 <strong>
-                    Representante legal
+                    Representante Legal
                 </strong>
 
             </td>
             <td>
                 {{$representanteLegal}}
             </td>
-            <td width="10%" BGCOLOR="#EAE5E5">
+            <td>
                 RFC
             </td>
-            <td width="16%">
+            <td>
                 {{$rfcRepresentanteLegal}}
             </td>
 
         </tr>
-        <tr>
-            <td  BGCOLOR="#EAE5E5">
-                Domcilio Negocio
-            </td>
-            <td>
-                {{$domicilioNegocio}}
-            </td>
-            <td  BGCOLOR="#EAE5E5" >Teléfono</td>
-            <td>
-                {{$telefonoNegocio}}
-            </td>
-        </tr>
-        <tr>
-            <td  BGCOLOR="#EAE5E5">
-            Domcilio particular
-            </td>
-            <td></td>
-            <td  BGCOLOR="#EAE5E5">Teléfono</td>
-            <td>
-                {{$telefonoRepresentanteLegal}}
-            </td>
-        </tr>
-
-        
-
-        
 
 
-            @else
 
+
+
+        @else
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -364,6 +343,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$rfcSolicitante}}</td>
         </tr>
+        @endif
+
+
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -385,6 +367,42 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
         </tr>
 
+        @if($representanteLegal != "")
+
+        <tr>
+            <td BGCOLOR="#EAE5E5">
+                <strong>
+                    Domiclio Particular
+                </strong>
+
+            </td>
+            <td>
+                {{$domicilioRepresentanteLegal}}
+            </td>
+
+
+        </tr>
+        <tr>
+            <td BGCOLOR="#EAE5E5">
+                <strong>
+                    R.F.C
+                </strong>
+
+            </td>
+            <td>{{$rfcRepresentanteLegal}}</td>
+        </tr>
+        <tr>
+            <td BGCOLOR="#EAE5E5">
+                <strong>
+                    Teléfono
+                </strong>
+
+            </td>
+            <td>
+                {{$telefonoRepresentanteLegal}}
+            </td>
+        </tr>
+        @else
 
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -412,9 +430,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
         @endif
 
-
-
-
     </table>
 
     <br>
@@ -423,292 +438,142 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
     <table width="100%" border="1">
         <thead>
-            <tr>
+            <th BGCOLOR="#EAE5E5" width="28%">Tipo de Crédito</th>
+            <th BGCOLOR="#EAE5E5">
+
+                Monto del <br>
+                Crédito
+
+            </th>
+            <th BGCOLOR="#EAE5E5">
+                Plazo Total Meses
+            </th>
+            <th BGCOLOR="#EAE5E5">
+                Gracia<br>
+                Capital<br>
+                Meses <br>
+            </th>
+
+            @if($productoCredito =="PLAN E-125")
 
 
-                <th BGCOLOR="#EAE5E5" width="28%">Tipo de Crédito</th>
-                <th BGCOLOR="#EAE5E5">
+            <th BGCOLOR="#EAE5E5">
+                Gracia a <br>
+                Interés<br>
+                (Ordinario)<br>
+                4 meses
+            </th>
+            <th BGCOLOR="#EAE5E5">
+                Interés<br>
+                (Ordinario)
 
-                    Monto del <br>
-                    Crédito
+                <br>
 
-                </th>
+            </th>
 
+            @else
 
-                @if($idProductoCredito ==5 )
+            <th BGCOLOR="#EAE5E5">
+                Interés<br>
+                (Ordinario)<br>
+                4 meses
+            </th>
+            <th BGCOLOR="#EAE5E5">
+                Interés<br>
+                (Ordinario
+                32 meses)
+                <br>
 
-                <th BGCOLOR="#EAE5E5">
-                    Plazo <br>
-                    Total <br>
-                    Meses
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Gracia <br>
-                    Capital <br>
-                    Meses
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Gracia a <br>
-                    Interés <br>
-                    Ordinario <br>
-                    Meses
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Interés <br>
-                    (Ordinario)
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Interés<br>
-                    (Moral)<br>
-                    Mensual
-                </th>
-                <th BGCOLOR="#EAE5E5">
-                    Comisión<br>
-                    por <br>
-                    apertura
-                </th>
-
-                @elseif($idProductoCredito == 6)
-
-                <th BGCOLOR="#EAE5E5">
-                    Plazo <br>
-                    Total <br>
-                    Meses
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Gracia <br>
-                    Capital <br>
-                    Meses
-                </th>
-                <th BGCOLOR="#EAE5E5">
-                    Interés<br>
-                    (Ordinario)<br>
-                    4 meses
-                </th>
-                <th BGCOLOR="#EAE5E5">
-                    Interés<br>
-                    (Ordinario)<br>
-                    32 meses
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Interés <br>
-                    (Moral)<br>
-                    Mensual
-                </th>
-
-                <th BGCOLOR="#EAE5E5">
-                    Comisión <br>
-                    por <br>
-                    apertura
-                </th>
+            </th>
+            @endif
 
 
-
-                @else
-
-
-
-                <th BGCOLOR="#EAE5E5">Plazo <br> Meses</th>
-                <th BGCOLOR="#EAE5E5">
-                    Gracia<br>
-                    Meses
-                </th>
-                <th BGCOLOR="#EAE5E5">
-                    Interés
-                    Orhinario
-
-                </th>
-                <th BGCOLOR="#EAE5E5">
-                    Interes<br>
-                    Moral
-
-                </th>
-                <th BGCOLOR="#EAE5E5">
-                    Comisión por <br>
-                    apertura
-
-                </th>
-
-
-                @endif
-
-            </tr>
-
+            <th BGCOLOR="#EAE5E5">
+                Interés <br>
+                (Moral)<br>
+                Mensual<br>
+            </th>
+            <th BGCOLOR="#EAE5E5">Comisión
+                <br> por
+                apertura
+            </th>
 
         </thead>
-        <tbody>
-            <tr>
+        <tr>
+            <td>
+                <center>
+                    {{$tipoDeCredito}}
+                </center>
 
-                @if($idProductoCredito == 5)
-                <td>
-                    <center>
-                        {{$tipoDeCredito}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$montoPrestamo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$mesesDePlazo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        6
-                    </center>
-                </td>
+            </td>
+            <td>
 
-                <td>
-                    <center>
-                        4
-                    </center>
-                </td>
+                <center>
+                    {{$montoPrestamo}}
+                </center>
 
-                <td>
-                    <center>
-                        5% Anual
-                    </center>
-                </td>
+            </td>
+            <td>
 
-                <td>
-                    <center>
-                        1.5%
-                    </center>
-                </td>
+                <center>
+                    {{$mesesDePlazo}}
+                </center>
 
-                <td>
-                    <center>
-                        0%
-                    </center>
-                </td>
+            </td>
+            <td>
+
+                <center>
+                    {{$periodoDeGracia}}
+                </center>
+
+            </td>
+            <td>
+
+                <center>
+                    {{$interesOrdinario}}
+                </center>
+
+            </td>
 
 
+            @if($productoCredito =="PLAN E-125")
+            <td>
+                <center>
+                    4
+                </center>
 
-                @elseif($idProductoCredito== 6)
+            </td>
+            <td>
 
-                <td>
-                    <center>
-                        {{$tipoDeCredito}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$montoPrestamo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$mesesDePlazo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        4
-                    </center>
-                </td>
+                <center>
+                    5% Anual
+                </center>
 
-                <td>
-                    <center>
-                        5% Anual
-                    </center>
+            </td>
 
-                </td>
+            @else
+            <td>
+                <center>
+                    {{$porcentajeInteresAnualMoral}} %
+                </center>
 
-                <td>
+            </td>
+            <td>
 
-                    <center>
-                        7% Anual
-                    </center>
+                <center>
+                    {{$porcentajeInteresMoral}}%
+                </center>
 
-                </td>
+            </td>
+            @endif
 
-                <td>
+            <td>
+                <center>
+                    0%
+                </center>
 
-                    <center>
-                        1.5%
-                    </center>
-
-                </td>
-
-                <td>
-
-                    <center>
-                        0%
-                    </center>
-
-                </td>
-
-                @else
-                <td>
-                    <center>
-                        {{$tipoDeCredito}}
-                    </center>
-
-                </td>
-                <td>
-
-                    <center>
-                        {{$montoPrestamo}}
-                    </center>
-
-                </td>
-
-                <td>
-
-                    <center>
-                        {{$mesesDePlazo}}
-                    </center>
-
-                </td>
-
-                <td>
-                    <center>
-                        {{$periodoDeGracia}}
-                    </center>
-
-                </td>
-
-                <td>
-
-                    <center>
-                        {{$interesOrdinario}}
-                    </center>
-
-                </td>
-
-                <td>
-                    <center>
-                        1.5%
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        1%
-                    </center>
-                </td>
-
-
-                @endif
-
-
-
-
-
-
-
-
-            </tr>
-
-        </tbody>
+            </td>
+        </tr>
     </table>
     <br>
 
@@ -773,8 +638,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$representanteLegal}}</td>
 
-         
-
             @if($conyugueRepresentanteLegal != "" )
             <td>
                 {{$conyugueRepresentanteLegal}}
@@ -823,10 +686,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
         </tr>
-
-      
-
-
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -897,9 +756,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </table>
     @else
 
-
-
-
     <table width="70%" border="1">
         <caption> Acreditado </caption>
         <tr>
@@ -910,12 +766,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$nombre_solicitante}}</td>
 
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                {{$conyugueRepresentanteLegal}}
-            </td>
-            @endif
-
 
         </tr>
         <tr>
@@ -925,13 +775,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </strong>
             </td>
             <td>{{$nacionalidadSolicitante}}</td>
-
-
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                {{$conyugueRepresentanteLegalNacionalidad}}
-            </td>
-            @endif
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -951,25 +794,8 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 Soltera
                 @endif
 
-
+            
             </td>
-
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                @if($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Casado")
-                Casado
-                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Casado")
-                Casada
-                @elseif($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Soltero")
-                Soltero
-                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Soltero")
-                Soltera
-                @endif
-            </td>
-
-
-            @endif
-
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -978,17 +804,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </strong>
             </td>
             <td>{{$fechaNacimientoSolicitante}}</td>
-
-
-
-
-
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                {{$conyugueRepresentanteLegalFechaNacimiento}}
-            </td>
-            @endif
-
         </tr>
         <tr>
             <td BGCOLOR="#EAE5E5">
@@ -1000,12 +815,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>
                 {{$lugarDeNacimientoSolicitante}}
             </td>
-
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                {{$conyugueRepresentanteLegaLugarNacimiento}}
-            </td>
-            @endif
         </tr>
 
 
@@ -1017,12 +826,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
             </td>
             <td>{{$domicilioSolicitante}}</td>
-
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                {{$conyugueRepresentanteLegalDomicilio}}
-            </td>
-            @endif
         </tr>
 
         <tr>
@@ -1034,12 +837,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>
                 {{$curpSolicitante}}
             </td>
-
-            @if($conyugueRepresentanteLegal != "" )
-            <td>
-                {{$conyugueRepresentanteLegalCurp}}
-            </td>
-            @endif
         </tr>
     </table>
 
@@ -1050,7 +847,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
     <table width="70%" border="1">
-        <caption> Garante Hipotecario</caption>
+        <caption> Garante Hipotecario por Sociedad Conyugal </caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -1092,7 +889,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>
 
 
-                @if($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Casado")
+            @if($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Casado")
                 Casado
                 @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Casado")
                 Casada
@@ -1101,7 +898,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Soltero")
                 Soltera
                 @endif
-
+               
             </td>
             @endif
 
@@ -1184,12 +981,11 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
     @if(empty($representanteLegal) )
+    @if($garanteHipotecario != $representanteLegal)
 
-
-    @if($garanteHipotecario !="" && $garanteHipotecario!= $nombre_solicitante )
 
     <table width="70%" border="1">
-        <caption> Garantes Hipotecarios </caption>
+        <caption> Garante Hipotecario por Sociedad Conyugal </caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -1226,10 +1022,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </strong>
             </td>
             <td>
+                
 
 
-
-                @if($sexoGaranteHipotecario == "H" && $estadoCivilGaranteHipotecario=="Casado")
+            @if($sexoGaranteHipotecario == "H" && $estadoCivilGaranteHipotecario=="Casado")
                 Casado
                 @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Casado")
                 Casada
@@ -1238,8 +1034,8 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Soltero")
                 Soltera
                 @endif
-
-            </td>
+        
+        </td>
 
             @if($nombreConyugueAval != "" )
             <td>

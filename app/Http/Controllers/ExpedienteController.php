@@ -41,7 +41,11 @@ class ExpedienteController extends Controller
   {
     $expediente = Expediente::where('id_expediente', '=', $id_expediente)
       ->first();
-    $pdf = PDF::loadView('expedientes.contrato-pdf', compact('expediente'));
+
+      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+      ->loadView('expedientes.contrato-pdf', ['expediente' => $expediente])
+      ->setPaper('legal');
+
     return $pdf->download('ejemplo.pdf');
   }
 
@@ -234,16 +238,40 @@ class ExpedienteController extends Controller
     $expediente = Expediente::where('id_expediente', '=', $id_expediente)
       ->first();
 
+    
+
 
     if ($expediente->relegal_nombre != "") {
       if ($expediente->relegal_nombre != $expediente->garhipo_nombre_del_aval) {
-        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+          $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
           ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
           ->setPaper('legal');
 
-        return $pdf->download('Carta Al Notario.pdf');
+
+          return $pdf->download('Carta Al Notario.pdf');
+
+      } elseif($expediente->relegal_nombre == $expediente->garhipo_nombre_del_aval){
+        if($expediente->conav_nombconyugaval == ""){
+          $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+          ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+          ->setPaper('letter');
+  
+  
+          return $pdf->download('Carta Al Notario.pdf');
+
+        }else{
+
+          $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+          ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+          ->setPaper('legal');
+  
+          return $pdf->download('Carta Al Notario.pdf');
+        }
+     
       }
-    } elseif ($expediente->garhipo_nombre_del_aval != $expediente->nombre_solicitante) {
+
+      
+    } elseif ($expediente->garhipo_nombre_del_aval != null  && $expediente->garhipo_nombre_del_aval != $expediente->nombre_solicitante) {
 
 
       $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
@@ -251,10 +279,26 @@ class ExpedienteController extends Controller
         ->setPaper('legal');
 
       return $pdf->download('Carta Al Notario.pdf');
-    } else {
+    } elseif (
+      $expediente->relegal_nombre == "" &&
+      ($expediente->garhipo_nombre_del_aval == null || $expediente->nombre_solicitante == $expediente->garhipo_nombre_del_aval)
+      && $expediente->conav_nombconyugaval == ""
+    ) {
+
+
+
+
       $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-      ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-      ->setPaper('legal', 'portrait');
+        ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+        ->setPaper('letter');
+      return $pdf->download('Carta Al Notario.pdf');
+    } else {
+
+
+      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+        ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+        ->setPaper('legal', 'portrait');
+      return $pdf->download('Carta Al Notario.pdf');
     }
   }
 
@@ -266,5 +310,41 @@ class ExpedienteController extends Controller
     $mes = substr($fechaAvaluo, -5, -3);
     $dia = substr($fechaAvaluo, -2);
     return $dia . " De " . ucwords(strtolower($this->nombreMes($mes))) . " Del " . $anio;
+  }
+
+
+  public function nombreActividad($actividadNegocio)
+  {
+
+    // dd($actividadNegocio);
+
+    // dd(strpos($actividadNegocio, "COMERCIALIZACION DE")== true);
+
+    //se puede hacer la comparacion con 'false' o 'true' y los comparadores '===' o '!=='
+    if (stripos($actividadNegocio, "COMERCIALIZACION") == true) {
+      $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+      $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $actividadNegocio);
+      return $actividadNegocio = "Comerzializacion de " . strtolower($cadenaFormateada);
+    } elseif (stripos($actividadNegocio, "FABRICACION DE") == true) {
+      $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+      $cadenaFormateada = str_replace("FABRICACION DE", "", $actividadNegocio);
+      return $actividadNegocio = "Fabricacion de " . strtolower($cadenaFormateada);
+    } elseif (stripos($actividadNegocio, "ELABORACION DE") == true) {
+
+
+
+      $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+      $cadenaFormateada = str_replace("ELABORACION DE", "", $actividadNegocio);
+      return $actividadNegocio = "Elaboracion de " . strtolower($cadenaFormateada);
+    } elseif (stripos($actividadNegocio, "SERVCIOS DE") == true) {
+
+      $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+      $cadenaFormateada = str_replace("SERVICIOS DE", "", $actividadNegocio);
+      return $actividadNegocio = "Servicios de " . strtolower($cadenaFormateada);
+    } elseif (stripos($actividadNegocio, "COMERCIALIZACION ARTICULOS DE") == true) {
+      $actividadNegocio = "Comercializacion de articulos de " . strtolower($cadenaFormateada);
+    } else {
+      $actividadNegocio = $actividadNegocio;
+    }
   }
 }

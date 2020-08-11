@@ -15,6 +15,9 @@
 
         html {
             margin: 50pt 50pt;
+            background-image:  url("/img/lineas.png");
+
+          
         }
 
         table {
@@ -23,8 +26,14 @@
     </style>
 </head>
 
-<body>
-    <p align="justify">
+
+
+<body >
+  
+
+
+
+    <p align="justify" >
         <strong>CONTRATO PRIVADO de
             @if($expediente->tipocredito=="CRÉDITO SIMPLE")
             Crédito Simple
@@ -912,12 +921,6 @@
     @endif
 
 
-    @if( $expediente->garhipo_nombre_del_aval != "" && $expediente->garhipo_nombre_del_aval != $expediente->nombre_solicitante )
-        
-    @endif
-
-
-    @endif
 
     <p align="justify">
         Leido el presente Instrumento ante los otorgantes, lo ratificaron y firmaron en la Ciudad de Zacatecas, Zac., a los
