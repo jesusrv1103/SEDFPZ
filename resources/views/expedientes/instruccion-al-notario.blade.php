@@ -1,8 +1,9 @@
 @inject('metodo','App\Http\Controllers\ExpedienteController')
 @php
 //Nombre del Solicitante
-$nombre_solicitante=!isset($representanteLegal) ? $expediente->nombre_solicitante : $metodo->conversionNombre($expediente->nombre_solicitante);
-$nombreEmpresa= $expediente->nombre_solicitante;
+$nombre_solicitante= $metodo->conversionNombre($expediente->nombre_solicitante);
+$nombreEmpresa=!isset($representanteLegal) ? $expediente->nombre_solicitante : "";
+$rfcEmpresa = $expediente->permo_rfc;
 $nacionalidadSolicitante=ucwords(strtolower($expediente->solicitanteNacionalidad->nacionalidad));
 $estadoCivilSolicitante=ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->genesol_estado_civil)));
 $fechaNacimientoSolicitante= $metodo->imprimirFechaNacimiento($expediente->genesol_fecha_de_nacimiento);
@@ -14,7 +15,7 @@ $curpSolicitante= $expediente->genesol_curp;
 //RFC del solicitante
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
-$domicilioNegocio= ucwords(strtolower($expediente->negocio_domicilio))." ".
+$domicilioNegocio= ucwords(mb_strtolower($expediente->negocio_domicilio))." ".
 " ".$expediente->negocio_dom_numero.", ".
 " ".ucwords(strtolower($expediente->negocio_colonia)).", ".
 "Código Postal ".$expediente->negocio_codigo_postal.
@@ -37,7 +38,7 @@ ucwords(strtolower($expediente->genesol_colonia)).", Código Postal "
 $telefonoCelularSolicitante=$expediente->telcel;
 $telefonoParticularSolicitante=$expediente->telparticular;
 //Monto del Prestamo
-$montoPrestamo=number_format(floatval($expediente->monto),2);
+$montoPrestamo=!isset($expediente->monto)? "" :number_format(floatval($expediente->monto),2);
 //Meses del Plazo
 $mesesDePlazo=$expediente->plazo;
 //Periodo de Gracia
@@ -187,7 +188,7 @@ $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->
 
 
 //Nombre del conyugue del aval
-$nombreConyugueAval= $metodo->conversionNombre($expediente->conav_nombconyugaval);
+$nombreConyugueAval= !empty($expediente->conav_nombconyugaval) ? $metodo->conversionNombre($expediente->conav_nombconyugaval) :"";
 $estadoCivilConyugueAval =ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conav_estcivilconaval)));
 $fechaNacimientoConyugueAval =$metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
 $conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_lugarnaconyuaval));
@@ -244,6 +245,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             font-size: 12px;
             margin: 12mm 12mm 12mm 12mm;
         }
+
+       
+
+
     </style>
 
 </head>
@@ -292,10 +297,14 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 {{$nombreEmpresa}}
             </td>
             <td width="12%" BGCOLOR="#EAE5E5">
-                RFC
+
+                <strong>
+                        RFC
+                </strong>
+                
             </td>
             <td width="16%">
-
+                {{$rfcEmpresa}}
             </td>
         </tr>
         <tr>
@@ -309,7 +318,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 {{$representanteLegal}}
             </td>
             <td width="10%" BGCOLOR="#EAE5E5">
+                    <strong>
                 RFC
+                    </strong>
             </td>
             <td width="16%">
                 {{$rfcRepresentanteLegal}}
@@ -318,22 +329,39 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         </tr>
         <tr>
             <td  BGCOLOR="#EAE5E5">
+                <strong>
                 Domcilio Negocio
+                </strong>
             </td>
             <td>
+              
                 {{$domicilioNegocio}}
+               
             </td>
-            <td  BGCOLOR="#EAE5E5" >Teléfono</td>
+            <td  BGCOLOR="#EAE5E5" >
+
+                <strong>
+                Teléfono
+            </strong>
+            </td>
             <td>
                 {{$telefonoNegocio}}
             </td>
         </tr>
         <tr>
             <td  BGCOLOR="#EAE5E5">
+                <strong>
             Domcilio particular
+                </strong>
             </td>
-            <td></td>
-            <td  BGCOLOR="#EAE5E5">Teléfono</td>
+        <td>{{$domicilioRepresentanteLegal }}</td>
+            <td  BGCOLOR="#EAE5E5">
+                <strong>
+
+       
+                Teléfono
+            </strong>
+            </td>
             <td>
                 {{$telefonoRepresentanteLegal}}
             </td>
@@ -941,6 +969,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>
 
+
                 @if($sexoSolicitante == "H" && $estadoCivilSolicitante=="Casado")
                 Casado
                 @elseif($sexoSolicitante == "M" && $estadoCivilSolicitante=="Casado")
@@ -1020,7 +1049,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
             @if($conyugueRepresentanteLegal != "" )
             <td>
-                {{$conyugueRepresentanteLegalDomicilio}}
+                {{$domicilioRepresentanteLegal}}
             </td>
             @endif
         </tr>
@@ -1188,6 +1217,8 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
     @if($garanteHipotecario !="" && $garanteHipotecario!= $nombre_solicitante )
 
+
+
     <table width="70%" border="1">
         <caption> Garantes Hipotecarios </caption>
         <tr>
@@ -1284,7 +1315,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
         </tr>
 
-
+      
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -1363,6 +1394,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         Tel. 492 491 5034, Ext 36400 <br>
         www.fondoplata.zacatecas.gob.mx
     </p>
+
 
 
 

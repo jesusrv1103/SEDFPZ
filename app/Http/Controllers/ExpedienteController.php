@@ -126,31 +126,31 @@ class ExpedienteController extends Controller
 
     //dd($diaEnLetras);
 
-    return $dia . " (" . $diaEnLetras . ") DE " . $this->nombreMes($mes) . " DEL AÑO " . $anio . " (" . $anioEnLetras . ".)";
+    return $dia . " (" . ucfirst(strtolower($diaEnLetras)) . ") de " . $this->nombreMes($mes) . " del año " . $anio . " (" . ucfirst(strtolower($anioEnLetras)) . ".)";
   }
 
   public function nombreMes($mes)
   {
     switch ($mes) {
       case 1:
-        return "ENERO";
+        return "Enero";
         break;
       case 2:
-        return "FEBRERO";
+        return "Febrero";
         break;
       case 3:
-        return "MARZO";
+        return "Marzo";
         break;
       case 4:
-        return "ABRIL";
+        return "Abril";
         break;
 
       case 5:
-        return "MAYO";
+        return "Mayo";
         break;
 
       case 6:
-        return "JUNIO";
+        return "Junio";
         break;
 
       case 7:
@@ -183,7 +183,7 @@ class ExpedienteController extends Controller
   public function dineroEnLetras($monto)
   {
     $valor = Convertidor::dineroEnletra($monto);
-    return $valor;
+    return ucfirst(strtolower($valor));
   }
 
   public function soloNumeroALetras($numero)
