@@ -241,65 +241,15 @@ class ExpedienteController extends Controller
     
 
 
-    if ($expediente->relegal_nombre != "") {
-      if ($expediente->relegal_nombre != $expediente->garhipo_nombre_del_aval) {
-          $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-          ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-          ->setPaper('legal');
-
-
-          return $pdf->download('Carta Al Notario.pdf');
-
-      } elseif($expediente->relegal_nombre == $expediente->garhipo_nombre_del_aval){
-        if($expediente->conav_nombconyugaval == ""){
           $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
           ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
           ->setPaper('letter');
-  
-  
-          return $pdf->download('Carta Al Notario.pdf');
 
-        }else{
+         
 
-          $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-          ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-          ->setPaper('legal');
-  
-          return $pdf->download('Carta Al Notario.pdf');
-        }
-     
-      }
-
-      
-    } elseif ($expediente->garhipo_nombre_del_aval != null  && $expediente->garhipo_nombre_del_aval != $expediente->nombre_solicitante) {
+          return $pdf->download('ejemplo.pdf');
 
 
-      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-        ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-        ->setPaper('legal');
-
-      return $pdf->download('Carta Al Notario.pdf');
-    } elseif (
-      $expediente->relegal_nombre == "" &&
-      ($expediente->garhipo_nombre_del_aval == null || $expediente->nombre_solicitante == $expediente->garhipo_nombre_del_aval)
-      && $expediente->conav_nombconyugaval == ""
-    ) {
-
-
-
-
-      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-        ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-        ->setPaper('letter');
-      return $pdf->download('Carta Al Notario.pdf');
-    } else {
-
-
-      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-        ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-        ->setPaper('legal', 'portrait');
-      return $pdf->download('Carta Al Notario.pdf');
-    }
   }
 
 
@@ -316,15 +266,24 @@ class ExpedienteController extends Controller
   public function nombreActividad($actividadNegocio)
   {
 
-    // dd($actividadNegocio);
+   // dd($actividadNegocio);
 
     // dd(strpos($actividadNegocio, "COMERCIALIZACION DE")== true);
 
     //se puede hacer la comparacion con 'false' o 'true' y los comparadores '===' o '!=='
     if (stripos($actividadNegocio, "COMERCIALIZACION") == true) {
-      $cadenaFormateada = str_replace(",", "", $actividadNegocio);
-      $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $actividadNegocio);
-      return $actividadNegocio = "Comerzializacion de " . strtolower($cadenaFormateada);
+      if (stripos($actividadNegocio, "COMERCIALIZACION ARTICULOS DE") == true) {
+        $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+        $cadenaFormateada = str_replace("COMERCIALIZACION ARTICULOS DE", "", $actividadNegocio);
+
+        return $actividadNegocio = "Comercializacion de articulos de " . strtolower($cadenaFormateada);
+
+      } else{
+          $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+          $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $actividadNegocio);
+          return $actividadNegocio = "Comercializacion de " . strtolower($cadenaFormateada);
+      }
+    
     } elseif (stripos($actividadNegocio, "FABRICACION DE") == true) {
       $cadenaFormateada = str_replace(",", "", $actividadNegocio);
       $cadenaFormateada = str_replace("FABRICACION DE", "", $actividadNegocio);
@@ -341,10 +300,8 @@ class ExpedienteController extends Controller
       $cadenaFormateada = str_replace(",", "", $actividadNegocio);
       $cadenaFormateada = str_replace("SERVICIOS DE", "", $actividadNegocio);
       return $actividadNegocio = "Servicios de " . strtolower($cadenaFormateada);
-    } elseif (stripos($actividadNegocio, "COMERCIALIZACION ARTICULOS DE") == true) {
-      $actividadNegocio = "Comercializacion de articulos de " . strtolower($cadenaFormateada);
-    } else {
-      $actividadNegocio = $actividadNegocio;
+    }  else {
+      return $actividadNegocio = $actividadNegocio;
     }
   }
 }

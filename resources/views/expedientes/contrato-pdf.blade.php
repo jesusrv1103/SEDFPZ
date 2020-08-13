@@ -1402,7 +1402,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             DIVISION FIDUCIARIA (ANTES BANCO INTERNACIONAL S.A.,<br>
             INSTITUCIÓN DE BANCA MÚLTIPLE, GRUPO FINANCIERO BITAL, DIVISION FIDUCIARIA)<br>
             COMO FIDUCIARIO EN EL FIDEICOMISO NÚMERO 158127 DENOMINADO <br>
-            FONDO PLATA ZACATECAS.</strong>
+            Fondo Plata Zacatecas.</strong>
     </p>
 
     <p align="center"><br><br>

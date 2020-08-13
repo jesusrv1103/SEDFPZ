@@ -15,12 +15,13 @@ $curpSolicitante= $expediente->genesol_curp;
 //RFC del solicitante
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
-$domicilioNegocio= ucwords(mb_strtolower($expediente->negocio_domicilio))." ".
-" ".$expediente->negocio_dom_numero.", ".
-" ".ucwords(strtolower($expediente->negocio_colonia)).", ".
-"Código Postal ".$expediente->negocio_codigo_postal.
-' '.ucwords(strtolower($expediente->localidadzac)).", "
-.ucwords(strtolower($expediente->municipio->municipio));
+$municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac ;
+$domicilioNegocio= ucwords(mb_strtolower($expediente->negocio_domicilio)).
+" número ".$expediente->negocio_dom_numero .", ".
+" colonia ".ucwords(strtolower($expediente->negocio_colonia)).", ".
+"código postal ".$expediente->negocio_codigo_postal.
+"". $municipioLocalidadNegocio .", "
+.ucwords(strtolower($expediente->municipio->municipio)). " Zacatecas";
 
 
 $lugarDeNacimientoSolicitante=ucwords(strtolower($expediente->genesol_lugar_de_nacimiento));
@@ -29,9 +30,9 @@ $lugarDeNacimientoSolicitante=ucwords(strtolower($expediente->genesol_lugar_de_n
 
 //Domicilio del solicitate
 $domicilioSolicitante=
-"Calle ".ucwords(strtolower($expediente->genesol_domicilio_particular))." Número ".
-$expediente->genesol_domicilio_numero.", ".
-ucwords(strtolower($expediente->genesol_colonia)).", Código Postal "
+"Calle ".ucwords(strtolower($expediente->genesol_domicilio_particular))." número ".
+$expediente->genesol_domicilio_numero.", colonia ".
+ucwords(strtolower($expediente->genesol_colonia)).", código postal "
 .$expediente->genesol_codigo_postal.", "
 .ucwords(strtolower($expediente->genesol_municipio)). " Zacatecas.";
 //Telefono del Solicitante
@@ -91,11 +92,11 @@ $conyugueRepresentanteLegalTelefono=$expediente->relegal_telefono_celular;
 $conyugueRepresentanteLegalDomicilio= "Calle " . ucwords(strtolower( $expediente->conyrepleg_domicilioparticular))." ".
 ", ".
 ucwords(strtolower($expediente->conyrepleg_colonia)).
-", Codigo Postal ".$expediente->conyrepleg_codpos.", ".ucwords(strtolower($expediente->conyrepleg_municipio))." Zacatecas";
+", Codigo Postal ".$expediente->conyrepleg_codpos.", ".ucwords(strtolower($expediente->conyrepleg_municipio))." Zacatecas.";
 
 $conyugueRepresentanteLegalCurp=$expediente->conyrepleg_curp;
 $sexoConyugueRepresentanteLegal= substr($expediente->conyrepleg_curp,-8,1);
-
+                   
 
 
 
@@ -108,11 +109,11 @@ $garanteHipotecarioFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente-
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
 $garanteHipotecarioTelefono=$expediente->relegal_telefono_celular;
 
-$garanteHipotecarioDomicilio= "Calle " . ucwords(strtolower( $expediente->garhipo_domicilio_particular))." Número ".
+$garanteHipotecarioDomicilio= "Calle " . ucwords(strtolower( $expediente->garhipo_domicilio_particular))." número ".
 $expediente->garhipo_domicilio_numero.
-", ".
+", colonia ".
 ucwords(strtolower($expediente->garhipo_colonia)).
-", Codigo Postal ".$expediente->garhipo_codigo_postal.", ".ucwords(strtolower($expediente->garantia_municipio))." Zacatecas";
+", codigo postal ".$expediente->garhipo_codigo_postal.", ".ucwords(strtolower($expediente->garantia_municipio))." Zacatecas.";
 
 $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
@@ -130,7 +131,7 @@ $tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->produ
 $productoCredito= $expediente->productoCredito->producto;
 
 
-$actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);// ucwords(strtolower($expediente->actividad_economica));
+$actividadNegocio=ucwords(strtolower($metodo->nombreActividad($expediente->actividad_economica)));// ucwords(strtolower($expediente->actividad_economica));
 
 
 
@@ -189,16 +190,18 @@ $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->
 
 //Nombre del conyugue del aval
 $nombreConyugueAval= !empty($expediente->conav_nombconyugaval) ? $metodo->conversionNombre($expediente->conav_nombconyugaval) :"";
+
+dd($nombreConyugueAval);
 $estadoCivilConyugueAval =ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conav_estcivilconaval)));
 $fechaNacimientoConyugueAval =$metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
 $conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_lugarnaconyuaval));
 $curpConyugueAval= $expediente->conav_curpconaval;
 
-$domicilioConyugueAval= "Calle " . ucwords(strtolower( $expediente->conyav_dompartconyuaval))." Número ".
+$domicilioConyugueAval= "Calle " . ucwords(strtolower( $expediente->conyav_dompartconyuaval))." número ".
 $expediente->garhipo_domicilio_numero.
-", ".
+", colonia ".
 ucwords(strtolower($expediente->conav_colconyugueaval))
-.", ".ucwords(strtolower($expediente->conav_municonyaval))." Zacatecas";
+.", ".ucwords(strtolower($expediente->conav_municonyaval))." Zacatecas.";
 
 $nacionalidadConyugueAval=isset($expediente->conyAvalNacionalidad->nacionalidad) ? ucwords(strtolower($expediente->conyAvalNacionalidad->nacionalidad)) : "";
 
@@ -1007,10 +1010,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </strong>
             </td>
             <td>{{$fechaNacimientoSolicitante}}</td>
-
-
-
-
 
             @if($conyugueRepresentanteLegal != "" )
             <td>
