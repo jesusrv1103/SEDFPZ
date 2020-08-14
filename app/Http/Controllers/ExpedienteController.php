@@ -42,7 +42,7 @@ class ExpedienteController extends Controller
     $expediente = Expediente::where('id_expediente', '=', $id_expediente)
       ->first();
 
-      $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+    $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
       ->loadView('expedientes.contrato-pdf', ['expediente' => $expediente])
       ->setPaper('legal');
 
@@ -52,53 +52,63 @@ class ExpedienteController extends Controller
 
   public function conversionNombre($nombre)
   {
-    /* separar el nombre completo en espacios */
-    $tokens = explode(' ', trim($nombre));
-    /* arreglo donde se guardan las "palabras" del nombre */
-    $names = array();
-    /* palabras de apellidos (y nombres) compuetos */
-    $special_tokens = array('da', 'de', 'del', 'la', 'las', 'los', 'mac', 'mc', 'van', 'von', 'y', 'i', 'san', 'santa');
 
-    $prev = "";
-    foreach ($tokens as $token) {
-      $_token = strtolower($token);
-      if (in_array($_token, $special_tokens)) {
-        $prev .= "$token ";
-      } else {
-        $names[] = $prev . $token;
-        $prev = "";
+
+    if ($nombre == "Enríquez Suárez del Real Leticia") {
+
+
+      return "Leticia Enríquez Suárez del Real";
+    } else {
+
+      /* separar el nombre completo en espacios */
+      $tokens = explode(' ', trim($nombre));
+      /* arreglo donde se guardan las "palabras" del nombre */
+      /* arreglo donde se guardan las "palabras" del nombre */
+      $names = array();
+      /* palabras de apellidos (y nombres) compuetos */
+      $special_tokens = array('da', 'de', 'del', 'la', 'las', 'los', 'mac', 'mc', 'van', 'von', 'y', 'i', 'san', 'santa');
+
+      $prev = "";
+      foreach ($tokens as $token) {
+        $_token = strtolower($token);
+        if (in_array($_token, $special_tokens)) {
+          $prev .= "$token ";
+        } else {
+          $names[] = $prev . $token;
+          $prev = "";
+        }
       }
+
+      $num_nombres = count($names);
+      $nombres = $apellidos = "";
+      switch ($num_nombres) {
+        case 0:
+          $nombres = '';
+          break;
+        case 1:
+          $nombres = $names[0];
+          break;
+        case 2:
+          $nombres    = $names[0];
+          $apellidos  = $names[1];
+          break;
+        case 3:
+          $apellidos = $names[0] . ' ' . $names[1];
+          $nombres   = $names[2];
+        default:
+          $apellidos = $names[0] . ' ' . $names[1];
+          unset($names[0]);
+          unset($names[1]);
+
+          $nombres = implode(' ', $names);
+          break;
+      }
+
+      $nombres    = mb_convert_case($nombres, MB_CASE_TITLE, 'UTF-8');
+      $apellidos  = mb_convert_case($apellidos, MB_CASE_TITLE, 'UTF-8');
+
+      return $nombres . " " . $apellidos;
     }
-
-    $num_nombres = count($names);
-    $nombres = $apellidos = "";
-    switch ($num_nombres) {
-      case 0:
-        $nombres = '';
-        break;
-      case 1:
-        $nombres = $names[0];
-        break;
-      case 2:
-        $nombres    = $names[0];
-        $apellidos  = $names[1];
-        break;
-      case 3:
-        $apellidos = $names[0] . ' ' . $names[1];
-        $nombres   = $names[2];
-      default:
-        $apellidos = $names[0] . ' ' . $names[1];
-        unset($names[0]);
-        unset($names[1]);
-
-        $nombres = implode(' ', $names);
-        break;
-    }
-
-    $nombres    = mb_convert_case($nombres, MB_CASE_TITLE, 'UTF-8');
-    $apellidos  = mb_convert_case($apellidos, MB_CASE_TITLE, 'UTF-8');
-
-    return $nombres . " " . $apellidos;
   }
 
   public function numeroComiteEnletras($numeroComiteEnLetras)
@@ -106,7 +116,11 @@ class ExpedienteController extends Controller
     $numeroComite = intval(preg_replace('/[^0-9]+/', '', $numeroComiteEnLetras), 10);
     $formatter = new NumeroALetras;
     $numeroEnLetras = $formatter->toWords($numeroComite);
-    return $numeroEnLetras . "AVA";
+    $numeroEnLetras= ucfirst(strtolower($numeroEnLetras));
+
+
+   
+    return $numeroEnLetras . "ava";
   }
 
 
@@ -238,18 +252,12 @@ class ExpedienteController extends Controller
     $expediente = Expediente::where('id_expediente', '=', $id_expediente)
       ->first();
 
-    
+    $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+      ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
+      ->setPaper('letter');
 
 
-          $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-          ->loadView('expedientes.instruccion-al-notario', ['expediente' => $expediente])
-          ->setPaper('letter');
-
-         
-
-          return $pdf->download('ejemplo.pdf');
-
-
+    return $pdf->download('Instrucion ' . $expediente->nombre_solicitante . '.pdf');
   }
 
 
@@ -259,14 +267,14 @@ class ExpedienteController extends Controller
     $anio = substr($fechaAvaluo, 0, 4);
     $mes = substr($fechaAvaluo, -5, -3);
     $dia = substr($fechaAvaluo, -2);
-    return $dia . " De " . ucwords(strtolower($this->nombreMes($mes))) . " Del " . $anio;
+    return $dia . " de " . ucwords(strtolower($this->nombreMes($mes))) . " del " . $anio;
   }
 
 
   public function nombreActividad($actividadNegocio)
   {
 
-   // dd($actividadNegocio);
+
 
     // dd(strpos($actividadNegocio, "COMERCIALIZACION DE")== true);
 
@@ -276,14 +284,12 @@ class ExpedienteController extends Controller
         $cadenaFormateada = str_replace(",", "", $actividadNegocio);
         $cadenaFormateada = str_replace("COMERCIALIZACION ARTICULOS DE", "", $actividadNegocio);
 
-        return $actividadNegocio = "Comercializacion de articulos de " . strtolower($cadenaFormateada);
-
-      } else{
-          $cadenaFormateada = str_replace(",", "", $actividadNegocio);
-          $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $actividadNegocio);
-          return $actividadNegocio = "Comercializacion de " . strtolower($cadenaFormateada);
+        return $actividadNegocio = "Comercialización de articulos de " . strtolower($cadenaFormateada);
+      } else {
+        $cadenaFormateada = str_replace(",", "", $actividadNegocio);
+        $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $actividadNegocio);
+        return $actividadNegocio = "Comercialización de " . strtolower($cadenaFormateada);
       }
-    
     } elseif (stripos($actividadNegocio, "FABRICACION DE") == true) {
       $cadenaFormateada = str_replace(",", "", $actividadNegocio);
       $cadenaFormateada = str_replace("FABRICACION DE", "", $actividadNegocio);
@@ -294,13 +300,13 @@ class ExpedienteController extends Controller
 
       $cadenaFormateada = str_replace(",", "", $actividadNegocio);
       $cadenaFormateada = str_replace("ELABORACION DE", "", $actividadNegocio);
-      return $actividadNegocio = "Elaboracion de " . strtolower($cadenaFormateada);
+      return $actividadNegocio = "Elaboración de " . strtolower($cadenaFormateada);
     } elseif (stripos($actividadNegocio, "SERVCIOS DE") == true) {
 
       $cadenaFormateada = str_replace(",", "", $actividadNegocio);
       $cadenaFormateada = str_replace("SERVICIOS DE", "", $actividadNegocio);
       return $actividadNegocio = "Servicios de " . strtolower($cadenaFormateada);
-    }  else {
+    } else {
       return $actividadNegocio = $actividadNegocio;
     }
   }

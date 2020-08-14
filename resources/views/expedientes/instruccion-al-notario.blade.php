@@ -1,7 +1,10 @@
 @inject('metodo','App\Http\Controllers\ExpedienteController')
 @php
+
+
 //Nombre del Solicitante
 $nombre_solicitante= $metodo->conversionNombre($expediente->nombre_solicitante);
+
 $nombreEmpresa=!isset($representanteLegal) ? $expediente->nombre_solicitante : "";
 $rfcEmpresa = $expediente->permo_rfc;
 $nacionalidadSolicitante=ucwords(strtolower($expediente->solicitanteNacionalidad->nacionalidad));
@@ -21,7 +24,7 @@ $domicilioNegocio= ucwords(mb_strtolower($expediente->negocio_domicilio)).
 " colonia ".ucwords(strtolower($expediente->negocio_colonia)).", ".
 "código postal ".$expediente->negocio_codigo_postal.
 "". $municipioLocalidadNegocio .", "
-.ucwords(strtolower($expediente->municipio->municipio)). " Zacatecas";
+.ucwords(strtolower($expediente->municipio->municipio)). ", Zacatecas";
 
 
 $lugarDeNacimientoSolicitante=ucwords(strtolower($expediente->genesol_lugar_de_nacimiento));
@@ -34,7 +37,7 @@ $domicilioSolicitante=
 $expediente->genesol_domicilio_numero.", colonia ".
 ucwords(strtolower($expediente->genesol_colonia)).", código postal "
 .$expediente->genesol_codigo_postal.", "
-.ucwords(strtolower($expediente->genesol_municipio)). " Zacatecas.";
+.ucwords(strtolower($expediente->genesol_municipio)). ", Zacatecas.";
 //Telefono del Solicitante
 $telefonoCelularSolicitante=$expediente->telcel;
 $telefonoParticularSolicitante=$expediente->telparticular;
@@ -101,7 +104,12 @@ $sexoConyugueRepresentanteLegal= substr($expediente->conyrepleg_curp,-8,1);
 
 
 //Datos de garant Hipotecario
+
+
 $garanteHipotecario=isset($expediente->garhipo_nombre_del_aval) ? $metodo->conversionNombre($expediente->garhipo_nombre_del_aval) : "";
+
+
+
 $estadoCivilGaranteHipotecario= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->garhipo_estado_civil)));
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
 $garanteHipotecarioNacionalidad=! isset($expediente->garanteHipNacionalidad->nacionalidad) ? "" : ucwords(strtolower($expediente->garanteHipNacionalidad->nacionalidad));
@@ -131,7 +139,7 @@ $tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->produ
 $productoCredito= $expediente->productoCredito->producto;
 
 
-$actividadNegocio=ucwords(strtolower($metodo->nombreActividad($expediente->actividad_economica)));// ucwords(strtolower($expediente->actividad_economica));
+$actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);// ucwords(strtolower($expediente->actividad_economica));
 
 
 
@@ -141,18 +149,27 @@ $actividadNegocio=ucwords(strtolower($metodo->nombreActividad($expediente->activ
 //Destino Prestamo
 $destinoPrestamo = ucwords(strtolower($expediente->destino));
 //Descripcion Inmueble
-$descripcionInmueble=ucwords(mb_strtolower($expediente->garantia_descrbien_inmueble))
+
+$descripcionInmueble=$expediente->garantia_descrbien_inmueble
+.
+", con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
+según el avaluo practicado por el ".$expediente->garantia_perito_valuador
+. " de fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion);
+
+/*
+$descripcionInmueble=$expediente->garantia_descrbien_inmueble))
 ." Ubicada en la Calle ".ucwords(strtolower($expediente->garantia_domici))." ".$expediente->garantia_dom_numero.
 ", ".ucwords(strtolower($expediente->garantia_colonia)).
 ", Codigo Postal ".ucwords(strtolower($expediente->garantia_cod_postal)).", ".
 ucwords(strtolower($expediente->garantia_localidad)).", ".
 ucwords(strtolower($expediente->garantia_municipio)).
 ", con una Superficie de ".$expediente->garantia_superf_terreno_mt." m²".
-" con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
+" con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).".
 Según el Avaluo Practicado por el ".ucwords(strtolower($expediente->garantia_perito_valuador))
 . " de Fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion);
 
 $descripcionInmueble =ucwords(mb_strtolower(mb_strtoupper($descripcionInmueble, 'UTF-8')));
+*/
 
 $numeroDeComite= intval(preg_replace('/[^0-9]+/', '', $expediente->numcomite), 10);
 $numeroDeComite= ucfirst(strtolower($numeroDeComite ));
@@ -191,7 +208,8 @@ $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->
 //Nombre del conyugue del aval
 $nombreConyugueAval= !empty($expediente->conav_nombconyugaval) ? $metodo->conversionNombre($expediente->conav_nombconyugaval) :"";
 
-dd($nombreConyugueAval);
+
+
 $estadoCivilConyugueAval =ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conav_estcivilconaval)));
 $fechaNacimientoConyugueAval =$metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
 $conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_lugarnaconyuaval));
@@ -215,7 +233,6 @@ $sexoConyugueAval= substr($curpConyugueAval,-8,1);
 
 
 $idProductoCredito = $expediente->productoCredito->id_procredito;
-
 
 
 
@@ -494,7 +511,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
                 <th BGCOLOR="#EAE5E5">
                     Interés<br>
-                    (Moral)<br>
+                    (Mora)<br>
                     Mensual
                 </th>
                 <th BGCOLOR="#EAE5E5">
@@ -529,7 +546,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
                 <th BGCOLOR="#EAE5E5">
                     Interés <br>
-                    (Moral)<br>
+                    (Mora)<br>
                     Mensual
                 </th>
 
@@ -557,7 +574,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </th>
                 <th BGCOLOR="#EAE5E5">
                     Interes<br>
-                    Moral
+                    Mora
 
                 </th>
                 <th BGCOLOR="#EAE5E5">
@@ -932,7 +949,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
     <table width="70%" border="1">
-        <caption> Acreditado </caption>
+        <caption> Acreditado(a) </caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -1361,7 +1378,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
     <p ALIGN="justify">
         @if($representanteLegal== "")
-        A).- Se Anexan Copias de Actas de Nacimiento, Matrimonio, Comprobante de Domicilio, R.FC y CURP.<br>
+        A).- Se Anexan Copias de Actas de Nacimiento, Matrimonio,Identificación, Comprobante de Domicilio, R.FC y CURP.<br>
         B).- Se Anexan Copias de la Escritura, Certificado de Libertad de Gravamen, Avalúo y recibo de Pago de
         Predial.
         @else

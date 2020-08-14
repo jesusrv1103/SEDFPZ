@@ -147,15 +147,10 @@ ucwords(strtolower($expediente->actividad_economica));
 //Destino Prestamo
 $destinoPrestamo = ucwords(strtolower($expediente->destino));
 //Descripcion Inmueble
-$descripcionInmueble=ucwords(mb_strtolower($expediente->garantia_descrbien_inmueble))
-." Ubicada en la Calle ".ucwords(strtolower($expediente->garantia_domici))." ".$expediente->garantia_dom_numero.
-", ".ucwords(strtolower($expediente->garantia_colonia)).
-", Codigo Postal ".ucwords(strtolower($expediente->garantia_cod_postal)).", ".
-ucwords(strtolower($expediente->garantia_localidad)).", ".
-ucwords(strtolower($expediente->garantia_municipio)).
-", con una Superficie de ".$expediente->garantia_superf_terreno_mt." m²".
-" con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
-Según el Avaluo Practicado por el ".ucwords(strtolower($expediente->garantia_perito_valuador))
+$descripcionInmueble=$expediente->garantia_descrbien_inmueble
+.
+".Con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
+Según el Avaluo Practicado por el ".$expediente->garantia_perito_valuador
 . " de Fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion);
 
 $descripcionInmueble =ucwords(mb_strtolower(mb_strtoupper($descripcionInmueble, 'UTF-8')));
@@ -222,6 +217,8 @@ $sexoConyugueAval= substr($curpConyugueAval,-8,1);
 
 $idProductoCredito = $expediente->productoCredito->id_procredito;
 
+$numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
+
 
 
 
@@ -283,7 +280,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             Institución de Banca Múltiple,</strong> Grupo Financiero HSBC, División Fiduciaria (antes Banco
         Internacional S.A., Institución
         de Banca Múltiple, Grupo Financiero Bital, División Fiduciaria) como fiduciario en el Fideicomiso número 158127
-        denominado <strong>"FONDO PLATA ZACATECAS"</strong> representado por su apoderado especial el <strong>L.C.
+        denominado <strong>"Fondo Plata Zacatecas"</strong> representado por su apoderado especial el <strong>L.C.
             Felipe Ignacio Ávalos
             Pérez</strong>, Administrador del Fondo (en lo sucesivo y para efectos del presente contrato se le
         denominara <strong>"EL FONDO"
@@ -393,7 +390,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         y
         Actos de Administración, para suscribir los contratos de crédito del Fideicomiso Número <strong>158127
         </strong>(ciento cincuenta y ocho
-        mil ciento veintisiete) denominado <strong>FONDO PLATA ZACATECAS</strong>, mediante acta número
+        mil ciento veintisiete) denominado <strong>Fondo Plata Zacatecas</strong>, mediante acta número
         <strong>32,873</strong> (treinta y dos mil
         ochocientos setenta y tres) Libro <strong>949</strong> (novecientos cuarenta y nueve) de fecha
         <strong>13</strong> (trece) de Marzo de 2019 (dos mil
@@ -424,9 +421,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         IV.- Declara <strong>EL FONDO</strong> que el Presidente Suplente del H. Comité Técnico, autorizó el
         otorgamiento del crédito solicitado
         por <strong>EL ACREDITADO,</strong> según facultades que le confirió el H. Comité Técnico en la
-        <strong>{{ $metodo->numeroComiteEnletras($expediente->numcomite)}}
-            REUNIÓN
-            EXTRAORDINARIA, CELEBRADA EL DÍA
+        <strong>{{ $numeroComiteEnLetras}}
+            reunión
+            extraodinaria, celebrada el día
             {{ $metodo->fechaParaImprimirContrato($expediente->fecha_reunion_comite)}}</strong>, sujeto
         a que, previo a la formalización del presente contrato, <strong>EL ACREDITADO</strong> le manifestase por
         escrito que no tiene limitación
@@ -449,14 +446,14 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             y {{ $metodo->conversionNombre($expediente->conyrepleg_nombreconyusolicitan)}}
             @endif
         </strong>
-        estar conformes en comparecer en este
+        estar conforme(s) en comparecer en este
         contrato y estar conscientes de sus consecuencias y alcances legales.
     </p>
 
     <p align="justify">
         VI.-Sigue manifestando <strong>EL ACREDITADO</strong> que con objeto de incrementar sus operaciones ha
         solicitado y obtenido del
-        <strong>FONDO PLATA ZACATECAS</strong> un
+        <strong>Fondo Plata Zacatecas</strong> un
         <strong>
             {{$expediente->tipocredito}}
 
@@ -575,7 +572,11 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     <p align="justify">
         Las partes manifiestan que la forma de pago de la presente operación se concretará vía transferencia electrónica
         de
-        fondos de la cuenta <strong>0155654203 </strong> <strong> y CLABE 012930001556542030</strong> del banco
+        fondos de la cuenta
+        @if($expediente->productoCredito->id_credito)
+        @else
+        @endif
+         <strong>0155654203 </strong> <strong> y CLABE 012930001556542030</strong> del banco
         <strong>BBVA</strong> a nombre de la
         <strong>
             Secretaría de Economía (Fondo Plata Zacatecas)</strong> a la <strong> CUENTA {{$expediente->cuentabanco}} y
