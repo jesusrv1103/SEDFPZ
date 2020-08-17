@@ -7,19 +7,19 @@
     <title>SEDFP | FONDO PLATA ZACATECAS</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="/adminLTE/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="adminLTE/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/adminLTE/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="adminLTE/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="/adminLTE/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="adminLTE/Ionicons/css/ionicons.min.css">
     @stack('styles')
   
     <!-- Theme style -->
-    <link rel="stylesheet" href="/adminLTE/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="adminLTE/cssAdminLTE.min.css">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect. -->
-    <link rel="stylesheet" href="/adminLTE/css/skins/skin-red.css">
+    <link rel="stylesheet" href="adminLTE/css/skins/skin-red.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -54,13 +54,13 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="/adminLTE/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <img src="adminLTE/img/user2-160x160.jpg" class="user-image" alt="User Image">
                                 <span class="hidden-xs">Alexander Pierce</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <img src="adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                                     <p>
                                         Alexander Pierce - Web Developer
                                         <small>Member since Nov. 2012</small>
@@ -91,7 +91,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
                         <p>Alexander Pierce</p>
@@ -131,7 +131,7 @@
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0
             </div>
-            <strong>Copyright &copy; <a href="https://adminlte.io">Fondo Plata Zacatecas</a>.</strong> Todos los
+            <strong>Copyright &copy; <a href="https:/adminlte.io">Fondo Plata Zacatecas</a>.</strong> Todos los
             derechos reservados.
         </footer>
 
@@ -145,16 +145,16 @@
     <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="/adminLTE/jquery/dist/jquery.min.js"></script>
+<script src="adminLTE/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="/adminLTE/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="adminLTE/bootstrap/dist/js/bootstrap.min.js"></script>
    
  
 
     @stack('scripts')
 
     <!-- adminLTE App -->
-    <script src="/adminLTE/js/adminlte.min.js"></script>
+    <script src="adminLTE/js/adminlte.min.js"></script>
 </body>
 
 </html>

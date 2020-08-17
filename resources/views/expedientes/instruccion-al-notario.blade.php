@@ -27,7 +27,7 @@ $domicilioNegocio= ucwords(mb_strtolower($expediente->negocio_domicilio)).
 .ucwords(strtolower($expediente->municipio->municipio)). ", Zacatecas";
 
 
-$lugarDeNacimientoSolicitante=ucwords(strtolower($expediente->genesol_lugar_de_nacimiento));
+$lugarDeNacimientoSolicitante=$expediente->genesol_muni_naci;
 
 
 
@@ -67,7 +67,7 @@ $representanteLegalEstadoCivil= ucwords(strtolower(preg_replace("/\([^)]+\)/",""
 //fecha de nacimiento representante legal
 $fechaNacimientoRepresentanteLegal=$metodo->imprimirFechaNacimiento($expediente->relegal_fecha_de_nacimiento);
 //lugar de nacimiento Representante legal
-$lugarNacimientoRepresentanteLegal= ucwords(strtolower($expediente->relegal_lugar_de_nacimiento));
+$lugarNacimientoRepresentanteLegal= ucwords(strtolower($expediente->relegal_municipio_de_nacimiento));
 //Domiclio Representante legal
 $curpRepresentanteLegal= $expediente->relegal_curp;
 //curp Representante legal
@@ -90,7 +90,7 @@ $conyugueRepresentanteLegal=empty($expediente->conyrepleg_nombreconyusolicitan) 
 $conyugueRepresentanteLegalEstadoCivil= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conyrepleg_estado_civil)));
 $conyugueRepresentanteLegalNacionalidad= ucwords(strtolower($expediente->repLegalNacionalidad->nacionalidad));
 $conyugueRepresentanteLegalFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente->conyrepleg_fechacimie);
-$conyugueRepresentanteLegaLugarNacimiento=ucwords(strtolower($expediente->conyrepleg_lugardenacimiento));
+$conyugueRepresentanteLegaLugarNacimiento=ucwords(strtolower($expediente->conyrepleg_municipionacimiento));
 $conyugueRepresentanteLegalTelefono=$expediente->relegal_telefono_celular;
 $conyugueRepresentanteLegalDomicilio= "Calle " . ucwords(strtolower( $expediente->conyrepleg_domicilioparticular))." ".
 ", ".
@@ -111,7 +111,7 @@ $garanteHipotecario=isset($expediente->garhipo_nombre_del_aval) ? $metodo->conve
 
 
 $estadoCivilGaranteHipotecario= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->garhipo_estado_civil)));
-$garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
+$garanteHipotecarioLugarNacimiento=$expediente->garhipo_municipio_de_nacimiento;
 $garanteHipotecarioNacionalidad=! isset($expediente->garanteHipNacionalidad->nacionalidad) ? "" : ucwords(strtolower($expediente->garanteHipNacionalidad->nacionalidad));
 $garanteHipotecarioFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente->garhipo_fecha_de_nacimiento);
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
@@ -212,7 +212,7 @@ $nombreConyugueAval= !empty($expediente->conav_nombconyugaval) ? $metodo->conver
 
 $estadoCivilConyugueAval =ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conav_estcivilconaval)));
 $fechaNacimientoConyugueAval =$metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
-$conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_lugarnaconyuaval));
+$conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_municonyaval));
 $curpConyugueAval= $expediente->conav_curpconaval;
 
 $domicilioConyugueAval= "Calle " . ucwords(strtolower( $expediente->conyav_dompartconyuaval))." número ".
