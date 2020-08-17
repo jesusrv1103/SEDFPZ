@@ -135,7 +135,7 @@
 
 
 @push('styles')
-<link rel="stylesheet" href="/adminLTE/plugins/datatables.net-bs/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="adminLTE/plugins/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <style>
 
 @media screen and (max-width: 1200px) {
