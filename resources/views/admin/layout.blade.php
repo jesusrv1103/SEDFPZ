@@ -15,7 +15,7 @@
     @stack('styles')
   
     <!-- Theme style -->
-    <link rel="stylesheet" href="adminLTE/cssAdminLTE.min.css">
+    <link rel="stylesheet" href="adminLTE/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect. -->
@@ -131,7 +131,7 @@
             <div class="pull-right hidden-xs">
                 <b>Version</b> 1.0
             </div>
-            <strong>Copyright &copy; <a href="https:/adminlte.io">Fondo Plata Zacatecas</a>.</strong> Todos los
+            <strong>Copyright &copy; <a href="https://adminlte.io">Fondo Plata Zacatecas</a>.</strong> Todos los
             derechos reservados.
         </footer>
 
