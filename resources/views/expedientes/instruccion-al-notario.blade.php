@@ -19,12 +19,12 @@ $curpSolicitante= $expediente->genesol_curp;
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
 $municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac ;
-$domicilioNegocio= ucwords(mb_strtolower($expediente->negocio_domicilio)).
+$domicilioNegocio="Cale " .$expediente->negocio_domicilio.
 " número ".$expediente->negocio_dom_numero .", ".
-" colonia ".ucwords(strtolower($expediente->negocio_colonia)).", ".
+" colonia ".$expediente->negocio_colonia.", ".
 "código postal ".$expediente->negocio_codigo_postal.
 "". $municipioLocalidadNegocio .", "
-.ucwords(strtolower($expediente->municipio->municipio)). ", Zacatecas";
+.$expediente->municipio->municipio. ", Zacatecas";
 
 
 $lugarDeNacimientoSolicitante=$expediente->genesol_muni_naci;
@@ -33,11 +33,15 @@ $lugarDeNacimientoSolicitante=$expediente->genesol_muni_naci;
 
 //Domicilio del solicitate
 $domicilioSolicitante=
-"Calle ".ucwords(strtolower($expediente->genesol_domicilio_particular))." número ".
+"Calle ".$expediente->genesol_domicilio_particular." número ".
 $expediente->genesol_domicilio_numero.", colonia ".
-ucwords(strtolower($expediente->genesol_colonia)).", código postal "
+$expediente->genesol_colonia.", código postal "
 .$expediente->genesol_codigo_postal.", "
-.ucwords(strtolower($expediente->genesol_municipio)). ", Zacatecas.";
+.$expediente->genesol_municipio. ", Zacatecas.";
+
+
+
+
 //Telefono del Solicitante
 $telefonoCelularSolicitante=$expediente->telcel;
 $telefonoParticularSolicitante=$expediente->telparticular;
@@ -75,10 +79,12 @@ $curpRepresentanteLegal= $expediente->relegal_curp;
 $rfcRepresentanteLegal=$expediente->relegal_rfc;
 //telefono Representante Legal
 $telefonoRepresentanteLegal=$expediente->relegal_telefono_celular;
-$domicilioRepresentanteLegal= "Calle " . ucwords(strtolower( $expediente->relegal_domicilio_particular))." ".
+$domicilioRepresentanteLegal= "Calle " .  $expediente->relegal_domicilio_particular." ".
 "Número ".$expediente->relegal_domicilio_parnumero.", ".
-ucwords(strtolower($expediente->relegal_colonia)).
-", Codigo Postal ".$expediente->relegal_codigo_postal.", ".ucwords(strtolower($expediente->relegal_municipio))." Zacatecas";
+$expediente->relegal_colonia.
+", Codigo Postal ".$expediente->relegal_codigo_postal.", ".$expediente->relegal_municipio." Zacatecas";
+
+
 
 $sexoRepresentanteLegal= substr($curpRepresentanteLegal,-8,1);
 
@@ -91,6 +97,8 @@ $conyugueRepresentanteLegalEstadoCivil= ucwords(strtolower(preg_replace("/\([^)]
 $conyugueRepresentanteLegalNacionalidad= ucwords(strtolower($expediente->repLegalNacionalidad->nacionalidad));
 $conyugueRepresentanteLegalFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente->conyrepleg_fechacimie);
 $conyugueRepresentanteLegaLugarNacimiento=ucwords(strtolower($expediente->conyrepleg_municipionacimiento));
+
+
 $conyugueRepresentanteLegalTelefono=$expediente->relegal_telefono_celular;
 $conyugueRepresentanteLegalDomicilio= "Calle " . ucwords(strtolower( $expediente->conyrepleg_domicilioparticular))." ".
 ", ".
@@ -209,7 +217,6 @@ $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->
 $nombreConyugueAval= !empty($expediente->conav_nombconyugaval) ? $metodo->conversionNombre($expediente->conav_nombconyugaval) :"";
 
 
-
 $estadoCivilConyugueAval =ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conav_estcivilconaval)));
 $fechaNacimientoConyugueAval =$metodo->imprimirFechaNacimiento($expediente->conav_fechnacconyaval);
 $conyugueAvalLugarNacimiento=ucwords(mb_strtolower($expediente->conav_municonyaval));
@@ -263,7 +270,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         body {
             font-family: "Arial", serif;
             font-size: 12px;
-            margin: 12mm 12mm 12mm 12mm;
+            margin: 8mm 8mm 8mm 8mm;
         }
 
        
@@ -276,7 +283,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 <body>
 
     <div id="content">
-        <img src="{{ public_path('/img/logo_fondo.jpg')}}" height="70px" />
+        <img src="{{ public_path('/img/logo_fondo.jpg')}}" height="60px" />
     </div>
 
     <p ALIGN="right">
@@ -345,6 +352,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td width="16%">
                 {{$rfcRepresentanteLegal}}
             </td>
+            
 
         </tr>
         <tr>
@@ -823,9 +831,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
          
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != ""  || $nombreConyugueAval)
             <td>
-                {{$conyugueRepresentanteLegal}}
+                {{$nombreConyugueAval}}
             </td>
             @endif
 
@@ -838,9 +846,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$representanteLegalNacionalidad}}</td>
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != ""  || $nombreConyugueAval )
             <td>
-                {{$conyugueRepresentanteLegalNacionalidad}}
+                {{$nacionalidadConyugueAval}}
             </td>
             @endif
 
@@ -855,7 +863,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>{{$representanteLegalEstadoCivil}}</td>
 
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != ""  || $nombreConyugueAval)
             <td>
                 @if($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Casado")
                 Casado
@@ -864,6 +872,16 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 @elseif($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Soltero")
                 Soltero
                 @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Soltero")
+                Soltera
+                @endif
+
+                @if($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Casado")
+                Casado
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Casado")
+                Casada
+                @elseif($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Soltero")
+                Soltero
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Soltero")
                 Soltera
                 @endif
             </td>
@@ -883,9 +901,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$fechaNacimientoRepresentanteLegal}}</td>
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != "" || $nombreConyugueAval )
             <td>
-                {{$conyugueRepresentanteLegalFechaNacimiento}}
+                {{$conyugueRepresentanteLegalFechaNacimiento}} {{$fechaNacimientoConyugueAval}}
             </td>
             @endif
 
@@ -900,9 +918,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$lugarNacimientoRepresentanteLegal}}</td>
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != "" || $nombreConyugueAval)
             <td>
-                {{$conyugueRepresentanteLegaLugarNacimiento}}
+                {{$conyugueRepresentanteLegaLugarNacimiento}} {{$conyugueAvalLugarNacimiento}}
             </td>
             @endif
 
@@ -919,9 +937,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$domicilioRepresentanteLegal}}</td>
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != "" || $nombreConyugueAval)
             <td>
-                {{$conyugueRepresentanteLegalDomicilio}}
+                 {{$domicilioRepresentanteLegal}}
             </td>
             @endif
 
@@ -935,9 +953,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             </td>
             <td>{{$curpRepresentanteLegal}}</td>
 
-            @if($conyugueRepresentanteLegal != "" )
+            @if($conyugueRepresentanteLegal != "" || $nombreConyugueAval )
             <td>
-                {{$conyugueRepresentanteLegalCurp}}
+                {{$conyugueRepresentanteLegalCurp}}  {{$curpConyugueAval}}
             </td>
             @endif
 
@@ -988,7 +1006,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </strong>
             </td>
             <td>
-
+                
 
                 @if($sexoSolicitante == "H" && $estadoCivilSolicitante=="Casado")
                 Casado
@@ -998,6 +1016,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 Soltero
                 @elseif($sexoSolicitante == "M" && $estadoCivilSolicitante=="Soltero")
                 Soltera
+                @elseif($sexoSolicitante == "H" && $estadoCivilSolicitante=="Divorciado")
+                Divorciado
+                @elseif($sexoSolicitante == "M" && $estadoCivilSolicitante=="Divorciado")
+                Divorciada
                 @endif
 
 
@@ -1012,6 +1034,17 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 @elseif($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Soltero")
                 Soltero
                 @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Soltero")
+                Soltera
+                @endif
+
+
+                @if($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Casado")
+                Casado
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Casado")
+                Casada
+                @elseif($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Soltero")
+                Soltero
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Soltero")
                 Soltera
                 @endif
             </td>
@@ -1382,9 +1415,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         B).- Se Anexan Copias de la Escritura, Certificado de Libertad de Gravamen, Avalúo y recibo de Pago de
         Predial.
         @else
-        A).-Se anexan copias de Acta Constituitica y Actas de Asamblea Ordinarias
-        B).-Se anexan copias de Acta de Nacimiento, Matrimonio, Identificación, Comprobante de Domicilio,Cédula de R.F.C y CURP
-        C).-Se anexan copias de la Escritura, Certificacion de Libertad de Gravamen, Avaluo y Recibo de Pago de Predial
+        A).-Se anexan copias de Acta Constituitica y Actas de Asamblea Ordinarias <br>
+        B).-Se anexan copias de Acta de Nacimiento, Matrimonio, Identificación, Comprobante de Domicilio,Cédula de R.F.C y CURP <br>
+        C).-Se anexan copias de la Escritura, Certificacion de Libertad de Gravamen, Avaluo y Recibo de Pago de Predial <br>
         @endif
 
     </p>
@@ -1397,12 +1430,18 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
     <p ALIGN="center">
+
+        <center>
         Atentamente <br> <br>
         <strong>L.C Felipe Ignacio Ávalo Pérez </strong><br>
         Director
+        </center>
 
     </p>
-    <br>
+    <p align="left">
+        L'FIA/hoia/bsg
+    </p>
+  
 
     <p ALIGN="justify" style="font-size: 12px">
         Boulevard Jóse López Portillo No. 220-9,
