@@ -93,7 +93,10 @@ $sexoRepresentanteLegal= substr($curpRepresentanteLegal,-8,1);
 //Coyugue representante legal
 
 $conyugueRepresentanteLegal=empty($expediente->conyrepleg_nombreconyusolicitan) ? "" : $metodo->conversionNombre($expediente->conyrepleg_nombreconyusolicitan);
+
 $conyugueRepresentanteLegalEstadoCivil= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->conyrepleg_estado_civil)));
+
+
 $conyugueRepresentanteLegalNacionalidad= ucwords(strtolower($expediente->repLegalNacionalidad->nacionalidad));
 $conyugueRepresentanteLegalFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente->conyrepleg_fechacimie);
 $conyugueRepresentanteLegaLugarNacimiento=ucwords(strtolower($expediente->conyrepleg_municipionacimiento));
@@ -119,6 +122,7 @@ $garanteHipotecario=isset($expediente->garhipo_nombre_del_aval) ? $metodo->conve
 
 
 $estadoCivilGaranteHipotecario= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->garhipo_estado_civil)));
+
 $garanteHipotecarioLugarNacimiento=$expediente->garhipo_municipio_de_nacimiento;
 $garanteHipotecarioNacionalidad=! isset($expediente->garanteHipNacionalidad->nacionalidad) ? "" : ucwords(strtolower($expediente->garanteHipNacionalidad->nacionalidad));
 $garanteHipotecarioFechaNacimiento=$metodo->imprimirFechaNacimiento($expediente->garhipo_fecha_de_nacimiento);
@@ -162,7 +166,7 @@ $descripcionInmueble=$expediente->garantia_descrbien_inmueble
 .
 ", con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
 según el avaluo practicado por el ".$expediente->garantia_perito_valuador
-. " de fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion);
+. " de fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion).".";
 
 /*
 $descripcionInmueble=$expediente->garantia_descrbien_inmueble))
@@ -863,7 +867,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>{{$representanteLegalEstadoCivil}}</td>
 
 
-            @if($conyugueRepresentanteLegal != ""  || $nombreConyugueAval)
+            @if($conyugueRepresentanteLegal != ""  || $nombreConyugueAval="")
             <td>
                 @if($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Casado")
                 Casado
@@ -873,6 +877,12 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 Soltero
                 @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Soltero")
                 Soltera
+                @elseif($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Divorciado")
+                Divorciado
+                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Divorciado")
+                Divorciada
+                
+
                 @endif
 
                 @if($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Casado")
@@ -883,6 +893,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 Soltero
                 @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Soltero")
                 Soltera
+                @elseif($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Divorciado")
+                Divorciado
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Divorciado")
+                Divorciada
                 @endif
             </td>
             @endif
@@ -1027,14 +1041,11 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
             @if($conyugueRepresentanteLegal != "" )
             <td>
-                @if($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Casado")
+                @if($sexoConyugueRepresentanteLegal == "H" )
                 Casado
-                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Casado")
+                @elseif($sexoConyugueRepresentanteLegal == "M" )
                 Casada
-                @elseif($sexoConyugueRepresentanteLegal == "H" && $representanteLegalEstadoCivil=="Soltero")
-                Soltero
-                @elseif($sexoConyugueRepresentanteLegal == "M" && $representanteLegalEstadoCivil=="Soltero")
-                Soltera
+               
                 @endif
 
 
@@ -1046,6 +1057,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 Soltero
                 @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Soltero")
                 Soltera
+                @elseif($sexoConyugueAval== "H" && $estadoCivilConyugueAval=="Divorciado")
+                Divorciado
+                @elseif($sexoConyugueAval== "M" && $estadoCivilConyugueAval=="Divorciao")
+                Divorciada
                 @endif
             </td>
 
@@ -1098,7 +1113,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
             @if($conyugueRepresentanteLegal != "" )
             <td>
-                {{$domicilioRepresentanteLegal}}
+                    {{$domicilioSolicitante}}
             </td>
             @endif
         </tr>
@@ -1164,7 +1179,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                     Estado Civil
                 </strong>
             </td>
-            <td>{{$estadoCivilGaranteHipotecario}}</td>
+            <td>
+            
+                {{$estadoCivilGaranteHipotecario}}</td>
 
             @if($nombreConyugueAval != "" )
             <td>
@@ -1308,7 +1325,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>
 
 
-
                 @if($sexoGaranteHipotecario == "H" && $estadoCivilGaranteHipotecario=="Casado")
                 Casado
                 @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Casado")
@@ -1317,6 +1333,11 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 Soltero
                 @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Soltero")
                 Soltera
+                @elseif($sexoGaranteHipotecario == "H" && $estadoCivilGaranteHipotecario=="Divorciado")
+                Divorciado
+                @elseif($sexoGaranteHipotecario == "M" && $estadoCivilGaranteHipotecario=="Divorciado")
+                Divorciada
+                
                 @endif
 
             </td>
@@ -1375,7 +1396,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <td>{{$garanteHipotecarioDomicilio}}</td>
             @if($nombreConyugueAval != "" )
             <td>
-                {{$garanteHipotecarioDomicilio}}
+                    {{$garanteHipotecarioDomicilio}}
             </td>
             @endif
         </tr>
