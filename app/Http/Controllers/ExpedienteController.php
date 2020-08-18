@@ -283,12 +283,15 @@ class ExpedienteController extends Controller
     if (stripos($actividadNegocio, "COMERCIALIZACION") == true) {
       if (stripos($actividadNegocio, "COMERCIALIZACION ARTICULOS DE") == true) {
         $cadenaFormateada = str_replace(",", "", $actividadNegocio);
-        $cadenaFormateada = str_replace("COMERCIALIZACION ARTICULOS DE", "", $actividadNegocio);
+        $cadenaFormateada = str_replace("COMERCIALIZACION ARTICULOS DE", "", $cadenaFormateada);
 
         return $actividadNegocio = "Comercialización de articulos de " . strtolower($cadenaFormateada);
       } else {
         $cadenaFormateada = str_replace(",", "", $actividadNegocio);
-        $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $actividadNegocio);
+     
+        $cadenaFormateada = str_replace("COMERCIALIZACION DE", "", $cadenaFormateada);
+        
+       
         return $actividadNegocio = "Comercialización de " . strtolower($cadenaFormateada);
       }
     } elseif (stripos($actividadNegocio, "FABRICACION DE") == true) {
