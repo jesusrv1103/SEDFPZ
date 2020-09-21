@@ -19,7 +19,7 @@ $curpSolicitante= $expediente->genesol_curp;
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
 $municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac ;
-$domicilioNegocio="Cale " .$expediente->negocio_domicilio.
+$domicilioNegocio="Calle " .$expediente->negocio_domicilio.
 " número ".$expediente->negocio_dom_numero .", ".
 " colonia ".$expediente->negocio_colonia.", ".
 "código postal ".$expediente->negocio_codigo_postal.
