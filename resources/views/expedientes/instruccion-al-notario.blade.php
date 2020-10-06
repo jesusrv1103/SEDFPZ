@@ -18,6 +18,7 @@ $curpSolicitante= $expediente->genesol_curp;
 //RFC del solicitante
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
+<<<<<<< HEAD
 $municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac;
 
 
@@ -25,6 +26,12 @@ $municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio)
 $domicilioNegocio="Calle " .ucwords(strtolower($expediente->negocio_domicilio)).
 " número ".ucwords(strtolower($expediente->negocio_dom_numero )).", ".
 " colonia ".ucwords(strtolower($expediente->negocio_colonia)).", ".
+=======
+$municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac ;
+$domicilioNegocio="Calle " .$expediente->negocio_domicilio.
+" número ".$expediente->negocio_dom_numero .", ".
+" colonia ".$expediente->negocio_colonia.", ".
+>>>>>>> 766692898dbce3955950ba8b041afa4fafb205a4
 "código postal ".$expediente->negocio_codigo_postal.
 "". ucwords(strtolower($municipioLocalidadNegocio)) .", "
 .ucwords(strtolower($expediente->municipio->municipio)). ", Zacatecas";
