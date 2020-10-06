@@ -103,8 +103,19 @@
                         @endisset
                     </td>
                     <td>
-                        <a href="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"></i> </a>
-                        <a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"></i> </a>
+                        <a href="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"  title="Contrato"></i></a>
+
+
+
+
+                   
+                 @if($expediente->id_procredito!=5)    
+
+                        <a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-info btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black" title="Instrucción al notario"></i></a>
+
+                    @endif
+
+
                     </td>
                
                     </tr>

@@ -29,6 +29,7 @@ class ExpedienteController extends Controller
       'id_turnado',
       'fecha_asignacion_analista',
       'id_estatus',
+      'id_procredito',
       'fecha_terminacion'
     )
       ->where('id_expediente', '>', 6000)

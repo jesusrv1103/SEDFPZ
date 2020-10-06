@@ -273,7 +273,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     </div>
 
     <p align="justify">
-        <strong>CONTRATO PRIVADO de
+        <strong>CONTRATO PRIVADO  de
             {{$expediente->tipocredito}}
             "{{{$expediente->productoCredito->producto}}}",</strong> que celebran por una parte el
         <strong>HSBC México, S.A.,
