@@ -133,7 +133,10 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 //Tipo de credito
 $tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->producto;
 
+
 $productoCredito= $expediente->productoCredito->producto;
+
+
 
 
 $actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);//
@@ -573,10 +576,13 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         Las partes manifiestan que la forma de pago de la presente operación se concretará vía transferencia electrónica
         de
         fondos de la cuenta
-        @if($expediente->productoCredito->id_credito)
+      
+        @if($productoCredito=="Plan E-125")
+        <strong>CLABE 012930001619847481</strong>
         @else
+        <strong>0155654203 </strong> <strong> y CLABE 012930001556542030</strong>
         @endif
-         <strong>0155654203 </strong> <strong> y CLABE 012930001556542030</strong> del banco
+          del banco
         <strong>BBVA</strong> a nombre de la
         <strong>
             Secretaría de Economía (Fondo Plata Zacatecas)</strong> a la <strong> CUENTA {{$expediente->cuentabanco}} y
@@ -1419,6 +1425,10 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
         {{$nombre_solicitante}}
     </p>
+
+    @php
+    dd($expediente->productoCredito->id_credito);
+@endphp
 
 
 
