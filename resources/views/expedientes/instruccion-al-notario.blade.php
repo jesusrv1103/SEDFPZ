@@ -18,36 +18,28 @@ $curpSolicitante= $expediente->genesol_curp;
 //RFC del solicitante
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
-<<<<<<< HEAD
 $municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac;
 
 
-
-$domicilioNegocio="Calle " .ucwords(strtolower($expediente->negocio_domicilio)).
+$domicilioNegocio="Calle " .ucfirst(strtolower($expediente->negocio_domicilio)).
 " número ".ucwords(strtolower($expediente->negocio_dom_numero )).", ".
-" colonia ".ucwords(strtolower($expediente->negocio_colonia)).", ".
-=======
-$municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac ;
-$domicilioNegocio="Calle " .$expediente->negocio_domicilio.
-" número ".$expediente->negocio_dom_numero .", ".
-" colonia ".$expediente->negocio_colonia.", ".
->>>>>>> 766692898dbce3955950ba8b041afa4fafb205a4
+" colonia ".ucfirst(strtolower($expediente->negocio_colonia)).", ".
 "código postal ".$expediente->negocio_codigo_postal.
-"". ucwords(strtolower($municipioLocalidadNegocio)) .", "
-.ucwords(strtolower($expediente->municipio->municipio)). ", Zacatecas";
+"". ucfirst(strtolower($municipioLocalidadNegocio)) .", "
+.ucfirst(strtolower($expediente->municipio->municipio)). ", Zacatecas";
 
 
 
 
 
 
-$lugarDeNacimientoSolicitante=$expediente->genesol_muni_naci;
+$lugarDeNacimientoSolicitante=ucwords(strtolower($expediente->genesol_muni_naci));
 
 
 
 //Domicilio del solicitate
 $domicilioSolicitante=
-"Calle ".$expediente->genesol_domicilio_particular." número ".
+"Calle ".ucfirst(strtolower($expediente->genesol_domicilio_particular))." número ".
 $expediente->genesol_domicilio_numero.", colonia ".
 $expediente->genesol_colonia.", código postal "
 .$expediente->genesol_codigo_postal.", "
@@ -178,32 +170,27 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
 
 //Tipo de credito
-$tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->producto;
-$tipoDeCreditob= $expediente->tipocreditob." ".$expediente->productoCredito->producto;
-$tipoDeCreditoc= $expediente->tipocreditoc." ".$expediente->productoCredito->producto;
+$tipoDeCredito= ''.$expediente->tipocredito.' "'.$expediente->productoCredito->producto.'"';
+$tipoDeCreditob= ''.$expediente->tipocreditob.' "'.$expediente->productoCredito->producto.'"';
+$tipoDeCreditoc= ''.$expediente->tipocreditoc.' "'.$expediente->productoCredito->producto.'"';
 
 
 $productoCredito= $expediente->productoCredito->producto;
 
 
-$actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);// ucwords(strtolower($expediente->actividad_economica));
-
-
-
+$actividadNegocio=$metodo->nombreActividad( ucfirst(mb_strtolower($expediente->actividad_economica,'UTF-8')));
 
 
 
 //Destino Prestamo
-$destinoPrestamo = ucwords(strtolower($expediente->destino));
-$destinoPrestamob = ucwords(strtolower($expediente->destinob));
-$destinoPrestamoc = ucwords(strtolower($expediente->destinob));
+$destinoPrestamo = ucfirst(mb_strtolower($expediente->destino,'UTF-8'));
+$destinoPrestamob = ucfirst(mb_strtolower($expediente->destinob, 'UTF-8'));
+$destinoPrestamoc = ucfirst(mb_strtolower($expediente->destinoc, 'UTF-8'));
+
 //Descripcion Inmueble
 
 
-
-
-
-$descripcionInmueble=$expediente->garantia_descrbien_inmueble
+$descripcionInmueble=ucwords(strtolower($expediente->garantia_descrbien_inmueble))
 .
 ", con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
 según el avaluo practicado por el ".$expediente->garantia_perito_valuador
@@ -290,6 +277,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 @endphp
 
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -300,7 +290,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     <title>Instruccion al Notario</title>
 
     <style type="text/css">
-      
         table {
             border-collapse: collapse;
         }
@@ -311,6 +300,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         
         
         }
+
 
         body {
             font-family: "Arial", serif;
@@ -328,7 +318,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 <body>
 
     <div id="content">
-        <img src="{{ public_path('/img/logo_fondo.jpg')}}" height="60px" />
+        <img src="{{url('img/logo_fondo.jpg')}}" height="60px" />
     </div>
 
     <p ALIGN="right">
@@ -354,6 +344,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </p>
 
     <table width="100%" border="1">
+
 
 
         @if($expediente->relegal_nombre !="")
@@ -527,7 +518,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <tr>
 
 
-                <th BGCOLOR="#EAE5E5" width="28%">Tipo de Crédito</th>
+                <th BGCOLOR="#EAE5E5" width="35%">Tipo de Crédito</th>
                 <th BGCOLOR="#EAE5E5">
 
                     Monto del <br>
@@ -934,7 +925,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         </thead>
         <tr>
             <td>{{$actividadNegocio}}</td>
-            <td> {{$destinoPrestamo}}, {{$destinoPrestamob}}, {{$destinoPrestamoc}}</td>
+            <td> {{$destinoPrestamo}} {{$destinoPrestamob}} {{$destinoPrestamoc}}</td>
         </tr>
     </table>
     <br>
@@ -1619,16 +1610,12 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </p>
   
 
-    <p ALIGN="justify" style="font-size: 12px">
+    <p ALIGN="right" style="font-size: 10px">
         Boulevard Jóse López Portillo No. 220-9,
         Fracc. Las Colinas, Zacateca, Zac. C.P 98098,
         Tel. 492 491 5034, Ext 36400 <br>
         www.fondoplata.zacatecas.gob.mx
     </p>
-
-
-
-
 
 
 
