@@ -43,7 +43,7 @@ class ExpedienteController extends Controller
 
     $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
       ->loadView('expedientes.contrato-pdf', ['expediente' => $expediente])
-      ->setPaper('legal');
+      ->setPaper('A4');
 
     return $pdf->download('ejemplo.pdf');
   }

@@ -237,12 +237,12 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <style>
         @page {
             margin: 8mm;
+            size: 21.6cm 35.6cm;
         }
 
         body {
             font-family: "Arial", serif;
             font-size: 12px;
-            margin: 8mm;
         }
 
         #footer { position: fixed; left: 0px; bottom: -180px; right: 0px; height: 150px; background-color: lightblue; }
@@ -599,9 +599,9 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         <strong>CUARTA.- INTERESES ORDINARIOS.- EL ACREDITADO</strong> pagara a EL FONDO, intereses sobre saldos
         insolutos a la
-        TASA ANUAL FIJA del {{$expediente->productoCredito->crefpanual}}%
-        ({{$metodo->soloNumeroAletras($expediente->productoCredito->crefpanual)}}
-        PORCIENTO) pagaderos mensualmente los días últimos de cada mes. El primer
+        TASA ANUAL FIJA del <strong>{{$expediente->productoCredito->crefpanual}}%
+        ({{$metodo->soloNumeroAletras($expediente->productoCredito->crefpanual)}} 
+        PORCIENTO)</strong> pagaderos mensualmente los días últimos de cada mes. El primer
         pago deberá efectuarse el día último del mes, en el cual se otorgue el crédito.
     </p>
 
@@ -621,7 +621,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         El cálculo de los Intereses Ordinarios se efectuará utilizando el procedimiento de dias naturales transcurridos,
         con
-        divisor 360 (trescientos sesenta) (base comercial)
+        divisor 360 (trescientos sesenta) (base comercial).
     </p>
 
 
@@ -691,7 +691,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         <strong>EL
             ACREDITADO</strong> en abono a su crédito se aplicara precisamente en el siguiente orden: gastos diversos
         que hubiera
-        erogado EL FONDO en favor de <strong>EL ACREDITADO,</strong> costas (en su caso), honorarios, intereses
+        erogado <strong>EL FONDO</strong> en favor de <strong>EL ACREDITADO,</strong> costas (en su caso), honorarios, intereses
         moratorios, intereses
         normales y finalmente capital
     </p>
@@ -723,11 +723,16 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         que respalde el importe total del crédito, con los montos y vencimientos
         de acuerdo con lo estipulado en la cláusula séptima del presente contrato.
     </p>
+    <p>
+        <strong>EL ACREDITADO</strong> faculta expresamente a <strong> EL FONDO</strong> a endosar o descontar el pagré que emita conforme
+         a esta claúsula, así como a utilizarlo como cobertura de cualquier emisión  de títulos en serie o certificados de participacíon que
+         <strong>EL FONDO</strong> llegue a hacer por declaracion unilateral de su voluntad.
+    </p>
 
     <p align="justify">
-        <strong>DECIMA SEGUNDA.- GARANTÍAS.- {{$nombre_solicitante}}</strong> garantiza a EL FONDO el cumplimiento de
+        <strong>DECIMA SEGUNDA.- GARANTÍAS.- {{$nombre_solicitante}}</strong> garantiza a <strong>EL FONDO</strong> el cumplimiento de
         las
-        obligaciones que asumen en este contrato con las propias del Crédito Simple "Plan E-125"
+        obligaciones que asumen en este contrato con las propias del Crédito Simple "Plan E-125".
     </p>
 
     <p align="justify">
@@ -1013,9 +1018,8 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
 
     <p align="justify">
-        1.- Que <strong>EL ACREDITADO</strong> presente comunicación escrita en la que establezca que no tiene
-        limitación contractual alguna
-        para contraer el presente financiamiento y otorgar las Garantías solicitadas.
+        1.- Que <strong>EL ACREDITADO</strong> se obligue  a asegurar, por su valor real los bienes objeto de este financiamiento en
+        tránsito y desde su arribo a la planta, solo cuando el H. Comite Tecnico así lo condicione.
     </p>
 
     <p align="justify">
@@ -1042,7 +1046,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         un año y a no
         celebrar contratos de arrendamiento financiero durante la vigencia del presente crédito a menos que cuente con
         la previa
-        autorización de EL FONDO otorgada por escrito.
+        autorización de <strong>EL FONDO </strong> otorgada por escrito.
     </p>
 
     <p align="justify">
@@ -1087,7 +1091,10 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         3.- Si los bienes dados en garantía bajaren su valor en un 20% o más y <strong> EL ACREDITADO </strong> no
         restableciera la proporción
-        entre los bienes dados en garantía y el saldo insoluto del crédito. A este efecto <strong> EL ACREDITADO
+        entre los bienes dados en garantía y el saldo insoluto del crédito.
+    </p>
+    <p align="justify">
+        A este efecto <strong> EL ACREDITADO
         </strong> se obliga a mantener
         las reservas de depreciación y mantenimiento que se consideren necesarias y suficientes a fin de que ésta
         relación
@@ -1205,7 +1212,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         III.- Tener a disposición de <strong> EL FONDO </strong> los comprobantes originales de las inversiones que haya
         realizado con elpresente
         financiamiento,
-        a más tardar en un plazo de 45 (cuarenta y cinco) días contados a partir de la fecha de
+        a más tardar en un plazo de 90 (noventa) días contados a partir de la fecha de
         disposición de los recursos,<strong> EL FONDO </strong> podrá requerir a <strong> EL ACREDITADO </strong> la
         comprobación de que se trata, en
         cualquier momento dentro de la vigencia del crédito.
@@ -1277,7 +1284,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     </p>
 
     <p align="justify">
-        <strong><u>TRIGESIMA.- COMPETENCIA JURISDICCIONAL.</u></strong> Para cualquier controversia que se suscite con
+        <strong><u>VIGÉSIMA NOVENA.- COMPETENCIA JURISDICCIONAL.</u></strong> Para cualquier controversia que se suscite con
         motivo de la
         interpretación del presente contrato y para ser compelidas a su cumplimiento, las partes se someten expresamente
         a la
@@ -1423,11 +1430,11 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         <strong>
             EL ACREDITADO(S)</strong><br><br> <br>
 
-        {{$nombre_solicitante}}
+      <strong>  {{$nombre_solicitante}} </strong>
     </p>
 
     @php
-    dd($expediente->productoCredito->id_credito);
+
 @endphp
 
 
