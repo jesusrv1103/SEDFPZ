@@ -178,8 +178,7 @@ $tipoDeCreditoc= ''.$expediente->tipocreditoc.' "'.$expediente->productoCredito-
 $productoCredito= $expediente->productoCredito->producto;
 
 
-$actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);// ucwords(strtolower($expediente->actividad_economica));
-
+$actividadNegocio=$metodo->nombreActividad( ucfirst(mb_strtolower($expediente->actividad_economica,'UTF-8')));
 
 
 
@@ -291,7 +290,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     <title>Instruccion al Notario</title>
 
     <style type="text/css">
-      
         table {
             border-collapse: collapse;
         }
@@ -302,6 +300,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         
         
         }
+
 
         body {
             font-family: "Arial", serif;
@@ -1611,14 +1610,12 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </p>
   
 
-    <p ALIGN="justify" style="font-size: 12px">
+    <p ALIGN="right" style="font-size: 10px">
         Boulevard Jóse López Portillo No. 220-9,
         Fracc. Las Colinas, Zacateca, Zac. C.P 98098,
         Tel. 492 491 5034, Ext 36400 <br>
         www.fondoplata.zacatecas.gob.mx
     </p>
-
-
 
 
 
