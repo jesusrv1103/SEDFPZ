@@ -319,7 +319,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 <body>
 
     <div id="content">
-        <img src="{{ public_path('/img/logo_fondo.jpg')}}" height="60px" />
+        <img src="{{url('img/logo_fondo.jpg')}}" height="60px" />
     </div>
 
     <p ALIGN="right">
@@ -1622,9 +1622,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
 
-@php
-dd();
-@endphp
+
 
 </body>
 
