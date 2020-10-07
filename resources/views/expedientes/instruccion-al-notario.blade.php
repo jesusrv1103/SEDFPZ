@@ -278,6 +278,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 @endphp
 
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -342,6 +345,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </p>
 
     <table width="100%" border="1">
+
 
 
         @if($expediente->relegal_nombre !="")
@@ -1618,9 +1622,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
 
-
-
-
+@php
+dd();
+@endphp
 
 </body>
 

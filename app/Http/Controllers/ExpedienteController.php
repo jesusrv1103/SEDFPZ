@@ -30,7 +30,7 @@ class ExpedienteController extends Controller
       'id_procredito',
       'fecha_terminacion'
     )
-      ->where('id_expediente', '>', 6000)
+      ->where('id_estatus', '=',9)
       ->orderBy('fecha_recepcion', 'DESC')->get();
     return view('expedientes.index', compact('expedientes'));
   }
