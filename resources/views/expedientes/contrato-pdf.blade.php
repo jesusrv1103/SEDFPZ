@@ -105,6 +105,8 @@ $sexoConyugueRepresentanteLegal= substr($expediente->conyrepleg_curp,-8,1);
 //Datos de garant Hipotecario
 $garanteHipotecario=isset($expediente->garhipo_nombre_del_aval) ?
 $metodo->conversionNombre($expediente->garhipo_nombre_del_aval) : "";
+
+
 $estadoCivilGaranteHipotecario= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->garhipo_estado_civil)));
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
 $garanteHipotecarioNacionalidad=! isset($expediente->garanteHipNacionalidad->nacionalidad) ? "" :
@@ -242,7 +244,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
         body {
             font-family: "Arial", serif;
-            font-size: 12px;
+            font-size: 12px;                    
         }
 
         #footer { position: fixed; left: 0px; bottom: -180px; right: 0px; height: 150px; background-color: lightblue; }
@@ -292,27 +294,38 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
             @if($expediente->conyrepleg_nombreconyusolicitan != "")
             y {{ $metodo->conversionNombre($expediente->conyrepleg_nombreconyusolicitan)}}</strong>
-        (en lo sucesivo y para efectos del presente contrato a quien denominaremos <strong>"EL ACREDITADO"</strong>), al
-        tenor de
-        las siguientes Declaraciones y
-        Cláusulas:
+        (en lo sucesivo y para efectos del presente contrato a quien denominaremos <strong>"EL ACREDITADO"</strong>),
 
         @endif
 
 
         @if( $expediente->garhipo_nombre_del_aval != "" && $expediente->garhipo_nombre_del_aval !=
         $expediente->nombre_solicitante )
-        </strong>(en lo sucesivo y para efectos del presente contrato a quien denominaremos <strong>"EL
-            ACREDITADO"</strong>),
+        y por otra parte
+            <strong>
+                {{$garanteHipotecario}} 
+            </strong>
 
-        y como <strong> AVAL Y DEUDOR SOLIDARIO {{ $metodo->conversionNombre($expediente->garhipo_nombre_del_aval)}}
+       
             @endif
+
+          
+
+            @php
+                
+                dd($expediente->conav_nombconyugaval);
+            @endphp
 
 
             @if($expediente->conav_nombconyugaval != "")
             y
 
             {{$metodo->conversionNombre($expediente->conav_nombconyugaval)}}
+
+            @php
+            dd($garanteHipotecario);
+        @endphp
+            y como <strong> AVAL Y DEUDOR SOLIDARIO {{ $metodo->conversionNombre($expediente->garhipo_nombre_del_aval)}}
 
             al tenor de las siguientes Declaraciones y Cláusulas:
 
