@@ -174,7 +174,18 @@ $fechaComite= $metodo->imprimirFechaNacimiento($expediente->fecha_reunion_comite
 
 $interesMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpmensualmora), 10);
 
+
+if($interesMoral==15){
+    $interesMoralConLetra= "(UNO PUNTO CINCO PORCIENTO)";
+}else {
+    $interesMoralConLetra= "(TRES PORCIENTO)";
+}
+
+
+
 $parteEnteraInteresMoral= intval( $interesMoral/10);
+
+
 
 if($parteEnteraInteresMoral >=1 ){
 $porcentajeInteresMoral = intval( $interesMoral/10) . ".". $interesMoral%10;
@@ -185,6 +196,7 @@ $porcentajeInteresMoral = $interesMoral %10;
 
 
 $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpanualmora), 10);
+
 
 
 
@@ -223,6 +235,19 @@ $sexoConyugueAval= substr($curpConyugueAval,-8,1);
 $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
+
+
+$comisionPorApertura=$expediente->ProductoCredito->comision_apertura;
+
+
+
+
+if($comisionPorApertura=="0%")
+{
+    $letraComisionPorApertura="CERO POR CIENTO";
+} else {
+    $letraComisionPorApertura="UNO POR CIENTO";
+}
 
 
 
@@ -311,11 +336,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
           
 
-            @php
-                
-                dd($expediente->conav_nombconyugaval);
-            @endphp
-
+          
 
             @if($expediente->conav_nombconyugaval != "")
             y
@@ -641,9 +662,8 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         <strong>QUINTA.- INTERESES MORATORIOS.- </strong> el evento de que <strong>EL ACREDITADO</strong> incumpliera en
         el pago de las
-        amortizaciones de capital, las sumas vencidas de capital causarán intereses moratorios del <strong>1.5% (UNO
-            PUNTO
-            CINCO PORCIENTO)</strong> mensual, computables desde las fechas del vencimiento de las obligaciones y hasta
+        amortizaciones de capital, las sumas vencidas de capital causarán intereses moratorios del <strong>{{$porcentajeInteresMoral}}% {{$interesMoralConLetra}}
+  </strong> mensual, computables desde las fechas del vencimiento de las obligaciones y hasta
         las de su
         liquidación.
     </p>
@@ -659,7 +679,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         <strong>COMISIÓN POR APERTURA DEL "CRÉDITO".- " EL ACREDITADO"</strong> pagará a <strong>"EL FONDO" </strong>
         única ocasión una
-        comisión por apertura del <strong>0% (CERO PORCIENTO)</strong> sobre el importe total del crédito, comisión que
+    comisión por apertura del <strong>{{$comisionPorApertura}} {{$letraComisionPorApertura}}</strong> sobre el importe total del crédito, comisión que
         deberá ser
         descontada a la firma del presente contrato y quedará dentro del propio financiamiento del crédito.
     </p>
@@ -674,11 +694,16 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         a un plazo total de
         <strong>
             {{$expediente->plazo}}
-            ({{$metodo->soloNumeroAletras($expediente->plazo)}}) meses </strong> ,Incluyendo dentro del plazo un
-        <strong>
-            periodo de Gracia a Capital de 6 (SEIS) meses.
+            ({{$metodo->soloNumeroAletras($expediente->plazo)}}) 
+            @php
+                if($expediente->gracia==0){
+                    echo " meses</strong>.";
+                } else {
+                    echo " meses,</strong> incluyendo dentro del plazo un
+                    <strong> periodo de Gracia a Capital de 6 (SEIS) meses.</strong>";
+                }
+            @endphp
 
-        </strong>
     </p>
 
     <p align="justify">
@@ -745,7 +770,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         <strong>DECIMA SEGUNDA.- GARANTÍAS.- {{$nombre_solicitante}}</strong> garantiza a <strong>EL FONDO</strong> el cumplimiento de
         las
-        obligaciones que asumen en este contrato con las propias del Crédito Simple "Plan E-125".
+        obligaciones que asumen en este contrato con las propias del <strong>Crédito Simple "Plan E-125".</strong>
     </p>
 
     <p align="justify">
@@ -1445,6 +1470,10 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
       <strong>  {{$nombre_solicitante}} </strong>
     </p>
+
+    @php
+        dd($nombre_solicitante);
+    @endphp
 
     @php
 
