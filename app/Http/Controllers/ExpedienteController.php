@@ -30,7 +30,8 @@ class ExpedienteController extends Controller
       'id_procredito',
       'fecha_terminacion'
     )
-      ->where('id_estatus', '=',9)
+    ->where('id_expediente', '>',6800)
+    //  ->where('id_estatus', '=',9)
       ->orderBy('fecha_recepcion', 'DESC')->get();
     return view('expedientes.index', compact('expedientes'));
   }
@@ -43,7 +44,7 @@ class ExpedienteController extends Controller
 
     $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
       ->loadView('expedientes.contrato-pdf', ['expediente' => $expediente])
-      ->setPaper('legal');
+      ->setPaper('A4');
 
     return $pdf->download('ejemplo.pdf');
   }
