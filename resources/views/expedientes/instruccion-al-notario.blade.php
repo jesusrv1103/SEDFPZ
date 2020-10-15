@@ -22,7 +22,7 @@ $municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio)
 
 
 $domicilioNegocio="Calle " .ucfirst(strtolower($expediente->negocio_domicilio)).
-" número ".ucwords(strtolower($expediente->negocio_dom_numero )).", ".
+" número ".ucwords(strtolower($expediente->negocio_dom_numero)).", ".
 " colonia ".ucfirst(strtolower($expediente->negocio_colonia)).", ".
 "código postal ".$expediente->negocio_codigo_postal.
 "". ucfirst(strtolower($municipioLocalidadNegocio)) .", "
@@ -193,7 +193,7 @@ $destinoPrestamoc = ucfirst(mb_strtolower($expediente->destinoc, 'UTF-8'));
 $descripcionInmueble=ucwords(strtolower($expediente->garantia_descrbien_inmueble))
 .
 ", con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
-según el avaluo practicado por el ".$expediente->garantia_perito_valuador
+según el avaluo practicado por el ".ucwords(strtolower($expediente->garantia_perito_valuador))
 . " de fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion).".";
 
 /*
