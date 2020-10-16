@@ -151,7 +151,7 @@
             @endisset
 
 
-<b>Número de Oficio</b><br><input type="text" name="numeroficio" value="{{$expediente->numeroficio}}" required="">
+Número de Oficio<br><input type="text" name="numeroficio" value="{{$expediente->numeroficio}}" required="">
 
             </div>
 
