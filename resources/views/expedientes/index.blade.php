@@ -106,8 +106,8 @@
                      
 
 
-<a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#{{$expediente->id_expediente}}">
-  CONTRATOS
+<a href="#" class="btn btn-warning pull-right" data-toggle="modal" data-target="#{{$expediente->id_expediente}}">
+ <i class="fa fa-file-pdf-o text-black" title="Contrato"></i>
 </a>
 
 
@@ -170,7 +170,7 @@ Número de Oficio<br><input type="text" name="numeroficio" value="{{$expediente-
                    
                  @if($expediente->id_procredito!=5)    
 
-                        <a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-info btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black" title="Instrucción al notario"></i></a>
+                       <center><a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-info btn-sm" role="button"><i class="fa fa-file-pdf-o text-black" title="Instrucción al notario"></i></a></center>
 
                     @endif
 
