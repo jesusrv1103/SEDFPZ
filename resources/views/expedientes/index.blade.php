@@ -124,8 +124,7 @@
            <form action="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" method="get">
             <div class="modal-body" align="center">
 
-<h3>Desglose de Créditos</h3>
-
+<h3>Desglose Contratos de Créditos</h3>
 
             @isset($expediente->tipocredito)
                     <label><input type="radio" name="credito" required="">    
