@@ -103,10 +103,10 @@ $curpRepresentanteLegal= $expediente->relegal_curp;
 $rfcRepresentanteLegal=$expediente->relegal_rfc;
 //telefono Representante Legal
 $telefonoRepresentanteLegal=$expediente->relegal_telefono_celular;
-$domicilioRepresentanteLegal= "Calle " .ucwords(strtolower($expediente->relegal_domicilio_particular))." ".
+$domicilioRepresentanteLegal= "Calle " .ucfirst(strtolower($expediente->relegal_domicilio_particular))." ".
 "Número ".$expediente->relegal_domicilio_parnumero.", ".
-ucwords(strtolower($expediente->relegal_colonia)).
-", Codigo Postal ".$expediente->relegal_codigo_postal.", ".ucwords(strtolower($expediente->relegal_municipio)).", Zacatecas";
+ucfirst(strtolower($expediente->relegal_colonia)).
+", Codigo Postal ".$expediente->relegal_codigo_postal.", ".ucfirst(strtolower($expediente->relegal_municipio)).", Zacatecas";
 
 
 
@@ -190,7 +190,7 @@ $destinoPrestamoc = ucfirst(mb_strtolower($expediente->destinoc, 'UTF-8'));
 //Descripcion Inmueble
 
 
-$descripcionInmueble=ucwords(strtolower($expediente->garantia_descrbien_inmueble))
+$descripcionInmueble=ucfirst(strtolower($expediente->garantia_descrbien_inmueble))
 .
 ", con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
 según el avaluo practicado por el ".ucwords(strtolower($expediente->garantia_perito_valuador))
