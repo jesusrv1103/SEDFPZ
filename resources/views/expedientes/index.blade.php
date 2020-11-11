@@ -103,7 +103,65 @@
                         @endisset
                     </td>
                     <td>
-                        <a href="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" class="btn btn-default btn-warning btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black"  title="Contrato"></i></a>
+                     
+
+
+<a href="#" class="btn btn-warning pull-right" data-toggle="modal" data-target="#{{$expediente->id_expediente}}">
+ <i class="fa fa-file-pdf-o text-black" title="Contrato"></i>
+</a>
+
+
+
+<div class="modal fade" id="{{$expediente->id_expediente}}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+                <h5>CONTRATOS</h5>
+            </div>
+           <form action="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" method="get">
+            <div class="modal-body" align="center">
+
+<h3>Desglose Contratos de Créditos</h3>
+
+            @isset($expediente->tipocredito)
+                    <label><input type="radio" name="credito" required="">    
+                    {{$expediente->tipocredito}}
+                    </label><br>
+            @endisset
+
+
+
+
+            @isset($expediente->tipocreditob)
+                    <label><input type="radio" name="credito" required="">    
+                    {{$expediente->tipocreditob}}
+                    </label><br>
+            @endisset
+       
+
+
+            @isset($expediente->tipocreditoc)
+                    <label><input type="radio" name="credito" required="">    
+                    {{$expediente->tipocreditoc}}
+                    </label><br>
+            @endisset
+
+
+Número de Oficio<br><input type="text" name="numeroficio" value="{{$expediente->numeroficio}}" required="">
+
+            </div>
+
+            <div class="modal-footer">
+                      <center><input type="submit" class="btn btn-primary" value="Descargar Contrado"></center>
+            </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
 
 
 
@@ -111,7 +169,7 @@
                    
                  @if($expediente->id_procredito!=5)    
 
-                        <a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-info btn-sm" role="button">  <i class="fa fa-file-pdf-o text-black" title="Instrucción al notario"></i></a>
+                       <center><a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-info btn-sm" role="button"><i class="fa fa-file-pdf-o text-black" title="Instrucción al notario"></i></a></center>
 
                     @endif
 
