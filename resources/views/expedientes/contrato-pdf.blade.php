@@ -263,7 +263,7 @@ if($comisionPorApertura=="0%")
     <title>Document</title>
     <style>
         @page {
-            margin: 8mm;
+            margin: 15mm;
             size: 21.6cm 35.6cm;
         }
 
@@ -272,23 +272,10 @@ if($comisionPorApertura=="0%")
             font-size: 12px;                    
         }
 
-        #footer { position: fixed; left: 0px; bottom: -180px; right: 0px; height: 150px; background-color: lightblue; }
-       #footer .page:after { content: counter(page, upper-roman); }
+        
+     
     </style>
- <script type="text/php">
-    if (isset($pdf)) {
-        $x = 250;
-        $y = 10;
-        $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
-        $font = null;
-        $size = 14;
-        $color = array(255,0,0);
-        $word_space = 0.0;  //  default
-        $char_space = 0.0;  //  default
-        $angle = 0.0;   //  default
-        $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
-    }
-</script>
+
 
 
 </head>
@@ -298,9 +285,7 @@ if($comisionPorApertura=="0%")
 <body>
 
 
-    <div id="footer">
-        <p class="page">Page </p>
-    </div>
+    
 
     <p align="justify">
         <strong>CONTRATO PRIVADO  de
@@ -330,22 +315,19 @@ if($comisionPorApertura=="0%")
             <strong>
                 {{$garanteHipotecario}} 
             </strong>
+            
 
+            @php
+                dd($expediente->conav_nombconyugaval);
+            @endphp
        
             @endif
-
-          
-
-          
 
             @if($expediente->conav_nombconyugaval != "")
             y
 
             {{$metodo->conversionNombre($expediente->conav_nombconyugaval)}}
 
-            @php
-            dd($garanteHipotecario);
-        @endphp
             y como <strong> AVAL Y DEUDOR SOLIDARIO {{ $metodo->conversionNombre($expediente->garhipo_nombre_del_aval)}}
 
             al tenor de las siguientes Declaraciones y Cláusulas:
@@ -614,12 +596,12 @@ if($comisionPorApertura=="0%")
         @if($productoCredito=="Plan E-125")
         <strong>CLABE 012930001619847481</strong>
         @else
-        <strong>0155654203 </strong> <strong> y CLABE 012930001556542030</strong>
+        <strong>0155654203  y CLABE 012930001556542030</strong>
         @endif
           del banco
         <strong>BBVA</strong> a nombre de la
         <strong>
-            Secretaría de Economía (Fondo Plata Zacatecas)</strong> a la <strong> CUENTA {{$expediente->cuentabanco}} y
+            Secretaría de Economía </strong> <strong>(Fondo Plata Zacatecas)</strong> a la <strong> CUENTA {{$expediente->cuentabanco}} y
             CLABE {{$expediente->clavebanco}} de
             {{$expediente->banco->banco}}
             a nombre de
@@ -1471,13 +1453,8 @@ if($comisionPorApertura=="0%")
       <strong>  {{$nombre_solicitante}} </strong>
     </p>
 
-    @php
-        dd($nombre_solicitante);
-    @endphp
 
-    @php
-
-@endphp
+ 
 
 
 
