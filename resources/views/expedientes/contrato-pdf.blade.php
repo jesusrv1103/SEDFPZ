@@ -105,6 +105,8 @@ $sexoConyugueRepresentanteLegal= substr($expediente->conyrepleg_curp,-8,1);
 //Datos de garant Hipotecario
 $garanteHipotecario=isset($expediente->garhipo_nombre_del_aval) ?
 $metodo->conversionNombre($expediente->garhipo_nombre_del_aval) : "";
+
+
 $estadoCivilGaranteHipotecario= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->garhipo_estado_civil)));
 $garanteHipotecarioLugarNacimiento=ucwords(strtolower($expediente->garhipo_lugar_de_nacimiento));
 $garanteHipotecarioNacionalidad=! isset($expediente->garanteHipNacionalidad->nacionalidad) ? "" :
@@ -133,7 +135,10 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 //Tipo de credito
 $tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->producto;
 
+
 $productoCredito= $expediente->productoCredito->producto;
+
+
 
 
 $actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);//
@@ -169,7 +174,18 @@ $fechaComite= $metodo->imprimirFechaNacimiento($expediente->fecha_reunion_comite
 
 $interesMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpmensualmora), 10);
 
+
+if($interesMoral==15){
+    $interesMoralConLetra= "(UNO PUNTO CINCO PORCIENTO)";
+}else {
+    $interesMoralConLetra= "(TRES PORCIENTO)";
+}
+
+
+
 $parteEnteraInteresMoral= intval( $interesMoral/10);
+
+
 
 if($parteEnteraInteresMoral >=1 ){
 $porcentajeInteresMoral = intval( $interesMoral/10) . ".". $interesMoral%10;
@@ -180,6 +196,7 @@ $porcentajeInteresMoral = $interesMoral %10;
 
 
 $porcentajeInteresAnualMoral= intval(preg_replace('/[^0-9]+/', '', $expediente->ProductoCredito->crefpanualmora), 10);
+
 
 
 
@@ -220,6 +237,19 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
 
+$comisionPorApertura=$expediente->ProductoCredito->comision_apertura;
+
+
+
+
+if($comisionPorApertura=="0%")
+{
+    $letraComisionPorApertura="CERO POR CIENTO";
+} else {
+    $letraComisionPorApertura="UNO POR CIENTO";
+}
+
+
 
 
 @endphp
@@ -233,32 +263,19 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <title>Document</title>
     <style>
         @page {
-            margin: 8mm;
+            margin: 15mm;
+            size: 21.6cm 35.6cm;
         }
 
         body {
             font-family: "Arial", serif;
-            font-size: 12px;
-            margin: 8mm;
+            font-size: 12px;                    
         }
 
-        #footer { position: fixed; left: 0px; bottom: -180px; right: 0px; height: 150px; background-color: lightblue; }
-       #footer .page:after { content: counter(page, upper-roman); }
+        
+     
     </style>
- <script type="text/php">
-    if (isset($pdf)) {
-        $x = 250;
-        $y = 10;
-        $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
-        $font = null;
-        $size = 14;
-        $color = array(255,0,0);
-        $word_space = 0.0;  //  default
-        $char_space = 0.0;  //  default
-        $angle = 0.0;   //  default
-        $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
-    }
-</script>
+
 
 
 </head>
@@ -268,12 +285,10 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 <body>
 
 
-    <div id="footer">
-        <p class="page">Page </p>
-    </div>
+    
 
     <p align="justify">
-        <strong>CONTRATO PRIVADO de
+        <strong>CONTRATO PRIVADO  de
             {{$expediente->tipocredito}}
             "{{{$expediente->productoCredito->producto}}}",</strong> que celebran por una parte el
         <strong>HSBC México, S.A.,
@@ -289,27 +304,31 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
             @if($expediente->conyrepleg_nombreconyusolicitan != "")
             y {{ $metodo->conversionNombre($expediente->conyrepleg_nombreconyusolicitan)}}</strong>
-        (en lo sucesivo y para efectos del presente contrato a quien denominaremos <strong>"EL ACREDITADO"</strong>), al
-        tenor de
-        las siguientes Declaraciones y
-        Cláusulas:
+        (en lo sucesivo y para efectos del presente contrato a quien denominaremos <strong>"EL ACREDITADO"</strong>),
 
         @endif
 
 
         @if( $expediente->garhipo_nombre_del_aval != "" && $expediente->garhipo_nombre_del_aval !=
         $expediente->nombre_solicitante )
-        </strong>(en lo sucesivo y para efectos del presente contrato a quien denominaremos <strong>"EL
-            ACREDITADO"</strong>),
+        y por otra parte
+            <strong>
+                {{$garanteHipotecario}} 
+            </strong>
+            
 
-        y como <strong> AVAL Y DEUDOR SOLIDARIO {{ $metodo->conversionNombre($expediente->garhipo_nombre_del_aval)}}
+            @php
+                dd($expediente->conav_nombconyugaval);
+            @endphp
+       
             @endif
-
 
             @if($expediente->conav_nombconyugaval != "")
             y
 
             {{$metodo->conversionNombre($expediente->conav_nombconyugaval)}}
+
+            y como <strong> AVAL Y DEUDOR SOLIDARIO {{ $metodo->conversionNombre($expediente->garhipo_nombre_del_aval)}}
 
             al tenor de las siguientes Declaraciones y Cláusulas:
 
@@ -573,13 +592,16 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         Las partes manifiestan que la forma de pago de la presente operación se concretará vía transferencia electrónica
         de
         fondos de la cuenta
-        @if($expediente->productoCredito->id_credito)
+      
+        @if($productoCredito=="Plan E-125")
+        <strong>CLABE 012930001619847481</strong>
         @else
+        <strong>0155654203  y CLABE 012930001556542030</strong>
         @endif
-         <strong>0155654203 </strong> <strong> y CLABE 012930001556542030</strong> del banco
+          del banco
         <strong>BBVA</strong> a nombre de la
         <strong>
-            Secretaría de Economía (Fondo Plata Zacatecas)</strong> a la <strong> CUENTA {{$expediente->cuentabanco}} y
+            Secretaría de Economía </strong> <strong>(Fondo Plata Zacatecas)</strong> a la <strong> CUENTA {{$expediente->cuentabanco}} y
             CLABE {{$expediente->clavebanco}} de
             {{$expediente->banco->banco}}
             a nombre de
@@ -593,9 +615,9 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         <strong>CUARTA.- INTERESES ORDINARIOS.- EL ACREDITADO</strong> pagara a EL FONDO, intereses sobre saldos
         insolutos a la
-        TASA ANUAL FIJA del {{$expediente->productoCredito->crefpanual}}%
-        ({{$metodo->soloNumeroAletras($expediente->productoCredito->crefpanual)}}
-        PORCIENTO) pagaderos mensualmente los días últimos de cada mes. El primer
+        TASA ANUAL FIJA del <strong>{{$expediente->productoCredito->crefpanual}}%
+        ({{$metodo->soloNumeroAletras($expediente->productoCredito->crefpanual)}} 
+        PORCIENTO)</strong> pagaderos mensualmente los días últimos de cada mes. El primer
         pago deberá efectuarse el día último del mes, en el cual se otorgue el crédito.
     </p>
 
@@ -615,16 +637,15 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         El cálculo de los Intereses Ordinarios se efectuará utilizando el procedimiento de dias naturales transcurridos,
         con
-        divisor 360 (trescientos sesenta) (base comercial)
+        divisor 360 (trescientos sesenta) (base comercial).
     </p>
 
 
     <p align="justify">
         <strong>QUINTA.- INTERESES MORATORIOS.- </strong> el evento de que <strong>EL ACREDITADO</strong> incumpliera en
         el pago de las
-        amortizaciones de capital, las sumas vencidas de capital causarán intereses moratorios del <strong>1.5% (UNO
-            PUNTO
-            CINCO PORCIENTO)</strong> mensual, computables desde las fechas del vencimiento de las obligaciones y hasta
+        amortizaciones de capital, las sumas vencidas de capital causarán intereses moratorios del <strong>{{$porcentajeInteresMoral}}% {{$interesMoralConLetra}}
+  </strong> mensual, computables desde las fechas del vencimiento de las obligaciones y hasta
         las de su
         liquidación.
     </p>
@@ -640,7 +661,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         <strong>COMISIÓN POR APERTURA DEL "CRÉDITO".- " EL ACREDITADO"</strong> pagará a <strong>"EL FONDO" </strong>
         única ocasión una
-        comisión por apertura del <strong>0% (CERO PORCIENTO)</strong> sobre el importe total del crédito, comisión que
+    comisión por apertura del <strong>{{$comisionPorApertura}} {{$letraComisionPorApertura}}</strong> sobre el importe total del crédito, comisión que
         deberá ser
         descontada a la firma del presente contrato y quedará dentro del propio financiamiento del crédito.
     </p>
@@ -655,11 +676,16 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         a un plazo total de
         <strong>
             {{$expediente->plazo}}
-            ({{$metodo->soloNumeroAletras($expediente->plazo)}}) meses </strong> ,Incluyendo dentro del plazo un
-        <strong>
-            periodo de Gracia a Capital de 6 (SEIS) meses.
+            ({{$metodo->soloNumeroAletras($expediente->plazo)}}) 
+            @php
+                if($expediente->gracia==0){
+                    echo " meses</strong>.";
+                } else {
+                    echo " meses,</strong> incluyendo dentro del plazo un
+                    <strong> periodo de Gracia a Capital de 6 (SEIS) meses.</strong>";
+                }
+            @endphp
 
-        </strong>
     </p>
 
     <p align="justify">
@@ -685,7 +711,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         <strong>EL
             ACREDITADO</strong> en abono a su crédito se aplicara precisamente en el siguiente orden: gastos diversos
         que hubiera
-        erogado EL FONDO en favor de <strong>EL ACREDITADO,</strong> costas (en su caso), honorarios, intereses
+        erogado <strong>EL FONDO</strong> en favor de <strong>EL ACREDITADO,</strong> costas (en su caso), honorarios, intereses
         moratorios, intereses
         normales y finalmente capital
     </p>
@@ -717,11 +743,16 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         que respalde el importe total del crédito, con los montos y vencimientos
         de acuerdo con lo estipulado en la cláusula séptima del presente contrato.
     </p>
+    <p>
+        <strong>EL ACREDITADO</strong> faculta expresamente a <strong> EL FONDO</strong> a endosar o descontar el pagré que emita conforme
+         a esta claúsula, así como a utilizarlo como cobertura de cualquier emisión  de títulos en serie o certificados de participacíon que
+         <strong>EL FONDO</strong> llegue a hacer por declaracion unilateral de su voluntad.
+    </p>
 
     <p align="justify">
-        <strong>DECIMA SEGUNDA.- GARANTÍAS.- {{$nombre_solicitante}}</strong> garantiza a EL FONDO el cumplimiento de
+        <strong>DECIMA SEGUNDA.- GARANTÍAS.- {{$nombre_solicitante}}</strong> garantiza a <strong>EL FONDO</strong> el cumplimiento de
         las
-        obligaciones que asumen en este contrato con las propias del Crédito Simple "Plan E-125"
+        obligaciones que asumen en este contrato con las propias del <strong>Crédito Simple "Plan E-125".</strong>
     </p>
 
     <p align="justify">
@@ -1007,9 +1038,8 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
 
 
     <p align="justify">
-        1.- Que <strong>EL ACREDITADO</strong> presente comunicación escrita en la que establezca que no tiene
-        limitación contractual alguna
-        para contraer el presente financiamiento y otorgar las Garantías solicitadas.
+        1.- Que <strong>EL ACREDITADO</strong> se obligue  a asegurar, por su valor real los bienes objeto de este financiamiento en
+        tránsito y desde su arribo a la planta, solo cuando el H. Comite Tecnico así lo condicione.
     </p>
 
     <p align="justify">
@@ -1036,7 +1066,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         un año y a no
         celebrar contratos de arrendamiento financiero durante la vigencia del presente crédito a menos que cuente con
         la previa
-        autorización de EL FONDO otorgada por escrito.
+        autorización de <strong>EL FONDO </strong> otorgada por escrito.
     </p>
 
     <p align="justify">
@@ -1081,7 +1111,10 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     <p align="justify">
         3.- Si los bienes dados en garantía bajaren su valor en un 20% o más y <strong> EL ACREDITADO </strong> no
         restableciera la proporción
-        entre los bienes dados en garantía y el saldo insoluto del crédito. A este efecto <strong> EL ACREDITADO
+        entre los bienes dados en garantía y el saldo insoluto del crédito.
+    </p>
+    <p align="justify">
+        A este efecto <strong> EL ACREDITADO
         </strong> se obliga a mantener
         las reservas de depreciación y mantenimiento que se consideren necesarias y suficientes a fin de que ésta
         relación
@@ -1199,7 +1232,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         III.- Tener a disposición de <strong> EL FONDO </strong> los comprobantes originales de las inversiones que haya
         realizado con elpresente
         financiamiento,
-        a más tardar en un plazo de 45 (cuarenta y cinco) días contados a partir de la fecha de
+        a más tardar en un plazo de 90 (noventa) días contados a partir de la fecha de
         disposición de los recursos,<strong> EL FONDO </strong> podrá requerir a <strong> EL ACREDITADO </strong> la
         comprobación de que se trata, en
         cualquier momento dentro de la vigencia del crédito.
@@ -1271,7 +1304,7 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
     </p>
 
     <p align="justify">
-        <strong><u>TRIGESIMA.- COMPETENCIA JURISDICCIONAL.</u></strong> Para cualquier controversia que se suscite con
+        <strong><u>VIGÉSIMA NOVENA.- COMPETENCIA JURISDICCIONAL.</u></strong> Para cualquier controversia que se suscite con
         motivo de la
         interpretación del presente contrato y para ser compelidas a su cumplimiento, las partes se someten expresamente
         a la
@@ -1417,8 +1450,11 @@ $numeroComiteEnLetras=$metodo->numeroComiteEnletras($numeroComite);
         <strong>
             EL ACREDITADO(S)</strong><br><br> <br>
 
-        {{$nombre_solicitante}}
+      <strong>  {{$nombre_solicitante}} </strong>
     </p>
+
+
+ 
 
 
 

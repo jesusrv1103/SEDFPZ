@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use PDF;
 use App\Helpers\Convertidor;
 use Illuminate\Support\Carbon;
+use DB;
+
 
 use Luecano\NumeroALetras\NumeroALetras;
 
@@ -14,9 +16,7 @@ class ExpedienteController extends Controller
 {
   public function index(Request $request)
   {
-    $idEstatus = $request->get('idEstatus');
-
-    $idPrograma = $request->get('idPrograma');
+   
 
     $expedientes = Expediente::select(
       'id_expediente',
@@ -26,26 +26,44 @@ class ExpedienteController extends Controller
       'monto',
       'id_sector',
       'tipocredito',
+      'tipocredito',
+      'tipocreditob',
+      'tipocreditoc',
       'id_turnado',
       'fecha_asignacion_analista',
       'id_estatus',
+      'id_procredito',
+       'numeroficio',
       'fecha_terminacion'
     )
-      ->where('id_expediente', '>', 6000)
-      ->where('id_estatus','=',9)
-      ->estatus($idEstatus)->programas($idPrograma)->orderBy('fecha_recepcion', 'DESC')->get();
+    //->where('id_expediente', '>',5800)
+      ->where('id_estatus', '=',9)
+      ->orderBy('fecha_recepcion', 'DESC')->get();
     return view('expedientes.index', compact('expedientes'));
   }
 
 
   public function descargarContrato($id_expediente)
   {
+   
+
+///$diente = Expediente::where('id_expediente', '=', $id_expediente)->update(['numeroficio'=>$request['numeroficio']]);
+//return $diente->save();
+
+ $subcat = request()->input('numeroficio');
+        $prudctos = DB::table('expediente')->where('id_expediente',$id_expediente);
+        $prudctos->update(['numeroficio'=>$subcat]);
+
+
+
+
+
     $expediente = Expediente::where('id_expediente', '=', $id_expediente)
       ->first();
 
     $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
       ->loadView('expedientes.contrato-pdf', ['expediente' => $expediente])
-      ->setPaper('legal');
+      ->setPaper('A4');
 
     return $pdf->download('ejemplo.pdf');
   }

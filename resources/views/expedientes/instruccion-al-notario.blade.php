@@ -18,22 +18,28 @@ $curpSolicitante= $expediente->genesol_curp;
 //RFC del solicitante
 $rfcSolicitante=$expediente->genesol_rfc;
 //Domicilio del Negocio
-$municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac ;
-$domicilioNegocio="Cale " .$expediente->negocio_domicilio.
-" número ".$expediente->negocio_dom_numero .", ".
-" colonia ".$expediente->negocio_colonia.", ".
+$municipioLocalidadNegocio=($expediente->localidadzac != $expediente->municipio) ?  "" : $expediente->localidadzac;
+
+
+$domicilioNegocio="Calle " .ucfirst(strtolower($expediente->negocio_domicilio)).
+" número ".ucwords(strtolower($expediente->negocio_dom_numero)).", ".
+" colonia ".ucfirst(strtolower($expediente->negocio_colonia)).", ".
 "código postal ".$expediente->negocio_codigo_postal.
-"". $municipioLocalidadNegocio .", "
-.$expediente->municipio->municipio. ", Zacatecas";
+"". ucfirst(strtolower($municipioLocalidadNegocio)) .", "
+.ucfirst(strtolower($expediente->municipio->municipio)). ", Zacatecas";
 
 
-$lugarDeNacimientoSolicitante=$expediente->genesol_muni_naci;
+
+
+
+
+$lugarDeNacimientoSolicitante=ucwords(strtolower($expediente->genesol_muni_naci));
 
 
 
 //Domicilio del solicitate
 $domicilioSolicitante=
-"Calle ".$expediente->genesol_domicilio_particular." número ".
+"Calle ".ucfirst(strtolower($expediente->genesol_domicilio_particular))." número ".
 $expediente->genesol_domicilio_numero.", colonia ".
 $expediente->genesol_colonia.", código postal "
 .$expediente->genesol_codigo_postal.", "
@@ -46,14 +52,29 @@ $expediente->genesol_colonia.", código postal "
 $telefonoCelularSolicitante=$expediente->telcel;
 $telefonoParticularSolicitante=$expediente->telparticular;
 //Monto del Prestamo
-$montoPrestamo=!isset($expediente->monto)? "" :number_format(floatval($expediente->monto),2);
+$montoTotal=!isset($expediente->monto)? "" :number_format(floatval($expediente->monto),2);
+$montoPrestamoa=!isset($expediente->montoa)? "" :number_format(floatval($expediente->montoa),2);
+$montoPrestamob=!isset($expediente->montob)? "" :number_format(floatval($expediente->montob),2);
+$montoPrestamoc=!isset($expediente->montoc)? "" :number_format(floatval($expediente->montoc),2);
+
 //Meses del Plazo
 $mesesDePlazo=$expediente->plazo;
+$mesesDePlazob=$expediente->plazob;
+$mesesDePlazoc=$expediente->plazoc;
+
+
 //Periodo de Gracia
 $periodoDeGracia=$expediente->gracia;
+$periodoDeGraciab=$expediente->graciab;
+$periodoDeGraciac=$expediente->graciac;
 
 //Interes Ordinario
 $interesOrdinario= $expediente->productoCredito->crefpanual ."% Anual";
+$interesOrdinarioCovid= $expediente->productoCredito->crefpanualmora ." Anual";
+
+
+$interesMora= $expediente->productoCredito->crefpmensualmora ."";
+$deComision= $expediente->productoCredito->comision_apertura ."";
 
 $sexoSolicitante =substr($curpSolicitante,-8,1);
 
@@ -67,11 +88,14 @@ $representanteLegal=empty($expediente->relegal_nombre) ? "" : $metodo->conversio
 //$representanteLegalNacionalidad
 $representanteLegalNacionalidad= ucwords(strtolower($expediente->repLegalNacionalidad->nacionalidad));
 //estado civil representante Legal
-$representanteLegalEstadoCivil= ucwords(strtolower(preg_replace("/\([^)]+\)/","",$expediente->relegal_estado_civil)));
+$representanteLegalEstadoCivil= ucwords($expediente->relegal_estado_civil);
+$representanteLegalEstadoCivil=preg_replace("/[()]/", " ", $representanteLegalEstadoCivil);
+$representanteLegalEstadoCivil=ucfirst(strtolower($representanteLegalEstadoCivil));
+
 //fecha de nacimiento representante legal
 $fechaNacimientoRepresentanteLegal=$metodo->imprimirFechaNacimiento($expediente->relegal_fecha_de_nacimiento);
 //lugar de nacimiento Representante legal
-$lugarNacimientoRepresentanteLegal= ucwords(strtolower($expediente->relegal_municipio_de_nacimiento));
+$lugarNacimientoRepresentanteLegal= ucwords(strtolower($expediente->relegal_lugar_de_nacimiento));
 //Domiclio Representante legal
 $curpRepresentanteLegal= $expediente->relegal_curp;
 //curp Representante legal
@@ -79,10 +103,10 @@ $curpRepresentanteLegal= $expediente->relegal_curp;
 $rfcRepresentanteLegal=$expediente->relegal_rfc;
 //telefono Representante Legal
 $telefonoRepresentanteLegal=$expediente->relegal_telefono_celular;
-$domicilioRepresentanteLegal= "Calle " .  $expediente->relegal_domicilio_particular." ".
+$domicilioRepresentanteLegal= "Calle " .ucfirst(strtolower($expediente->relegal_domicilio_particular))." ".
 "Número ".$expediente->relegal_domicilio_parnumero.", ".
-$expediente->relegal_colonia.
-", Codigo Postal ".$expediente->relegal_codigo_postal.", ".$expediente->relegal_municipio." Zacatecas";
+ucfirst(strtolower($expediente->relegal_colonia)).
+", Codigo Postal ".$expediente->relegal_codigo_postal.", ".ucfirst(strtolower($expediente->relegal_municipio)).", Zacatecas";
 
 
 
@@ -146,26 +170,30 @@ $garanteHipotecarioCurp=$expediente->garhipo_curp;
 
 
 //Tipo de credito
-$tipoDeCredito= $expediente->tipocredito." ".$expediente->productoCredito->producto;
+$tipoDeCredito= ''.$expediente->tipocredito.' "'.$expediente->productoCredito->producto.'"';
+$tipoDeCreditob= ''.$expediente->tipocreditob.' "'.$expediente->productoCredito->producto.'"';
+$tipoDeCreditoc= ''.$expediente->tipocreditoc.' "'.$expediente->productoCredito->producto.'"';
+
 
 $productoCredito= $expediente->productoCredito->producto;
 
 
-$actividadNegocio=$metodo->nombreActividad($expediente->actividad_economica);// ucwords(strtolower($expediente->actividad_economica));
-
-
-
+$actividadNegocio=$metodo->nombreActividad( ucfirst(mb_strtolower($expediente->actividad_economica,'UTF-8')));
 
 
 
 //Destino Prestamo
-$destinoPrestamo = ucwords(strtolower($expediente->destino));
+$destinoPrestamo = ucfirst(mb_strtolower($expediente->destino,'UTF-8'));
+$destinoPrestamob = ucfirst(mb_strtolower($expediente->destinob, 'UTF-8'));
+$destinoPrestamoc = ucfirst(mb_strtolower($expediente->destinoc, 'UTF-8'));
+
 //Descripcion Inmueble
 
-$descripcionInmueble=$expediente->garantia_descrbien_inmueble
+
+$descripcionInmueble=ucfirst(strtolower($expediente->garantia_descrbien_inmueble))
 .
 ", con valor comercial de $".number_format(floatval($expediente->garantia_valor),2).",
-según el avaluo practicado por el ".$expediente->garantia_perito_valuador
+según el avaluo practicado por el ".ucwords(strtolower($expediente->garantia_perito_valuador))
 . " de fecha ".$metodo->imprimirFechaAvaluo($expediente->garantia_fecha_valuacion).".";
 
 /*
@@ -249,6 +277,9 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 @endphp
 
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -259,7 +290,6 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     <title>Instruccion al Notario</title>
 
     <style type="text/css">
-      
         table {
             border-collapse: collapse;
         }
@@ -270,6 +300,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         
         
         }
+
 
         body {
             font-family: "Arial", serif;
@@ -287,7 +318,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 <body>
 
     <div id="content">
-        <img src="{{ public_path('/img/logo_fondo.jpg')}}" height="60px" />
+        <img src="{{url('img/logo_fondo.jpg')}}" height="60px" />
     </div>
 
     <p ALIGN="right">
@@ -313,6 +344,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </p>
 
     <table width="100%" border="1">
+
 
 
         @if($expediente->relegal_nombre !="")
@@ -362,7 +394,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         <tr>
             <td  BGCOLOR="#EAE5E5">
                 <strong>
-                Domcilio Negocio
+                Domicilio Negocio
                 </strong>
             </td>
             <td>
@@ -383,7 +415,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         <tr>
             <td  BGCOLOR="#EAE5E5">
                 <strong>
-            Domcilio particular
+            Domicilio particular
                 </strong>
             </td>
         <td>{{$domicilioRepresentanteLegal }}</td>
@@ -486,7 +518,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
             <tr>
 
 
-                <th BGCOLOR="#EAE5E5" width="28%">Tipo de Crédito</th>
+                <th BGCOLOR="#EAE5E5" width="35%">Tipo de Crédito</th>
                 <th BGCOLOR="#EAE5E5">
 
                     Monto del <br>
@@ -495,7 +527,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </th>
 
 
-                @if($idProductoCredito ==5 )
+                @if($idProductoCredito ==5)
 
                 <th BGCOLOR="#EAE5E5">
                     Plazo <br>
@@ -581,7 +613,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 </th>
                 <th BGCOLOR="#EAE5E5">
                     Interés
-                    Orhinario
+                    Ordinario
 
                 </th>
                 <th BGCOLOR="#EAE5E5">
@@ -603,111 +635,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
         </thead>
         <tbody>
+
+
+ @if(isset($expediente->tipocredito))
             <tr>
-
-                @if($idProductoCredito == 5)
-                <td>
-                    <center>
-                        {{$tipoDeCredito}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$montoPrestamo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$mesesDePlazo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        6
-                    </center>
-                </td>
-
-                <td>
-                    <center>
-                        4
-                    </center>
-                </td>
-
-                <td>
-                    <center>
-                        5% Anual
-                    </center>
-                </td>
-
-                <td>
-                    <center>
-                        1.5%
-                    </center>
-                </td>
-
-                <td>
-                    <center>
-                        0%
-                    </center>
-                </td>
-
-
-
-                @elseif($idProductoCredito== 6)
-
-                <td>
-                    <center>
-                        {{$tipoDeCredito}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$montoPrestamo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        {{$mesesDePlazo}}
-                    </center>
-                </td>
-                <td>
-                    <center>
-                        4
-                    </center>
-                </td>
-
-                <td>
-                    <center>
-                        5% Anual
-                    </center>
-
-                </td>
-
-                <td>
-
-                    <center>
-                        7% Anual
-                    </center>
-
-                </td>
-
-                <td>
-
-                    <center>
-                        1.5%
-                    </center>
-
-                </td>
-
-                <td>
-
-                    <center>
-                        0%
-                    </center>
-
-                </td>
-
-                @else
                 <td>
                     <center>
                         {{$tipoDeCredito}}
@@ -717,11 +648,10 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
                 <td>
 
                     <center>
-                        {{$montoPrestamo}}
+                        ${{$montoPrestamoa}}
                     </center>
 
                 </td>
-
                 <td>
 
                     <center>
@@ -737,6 +667,8 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
                 </td>
 
+
+
                 <td>
 
                     <center>
@@ -745,23 +677,237 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
                 </td>
 
+   @if ($idProductoCredito ==6)
+
+           <td>
+
+                    <center>
+                        {{$interesOrdinarioCovid}}
+                    </center>
+
+                </td>
+
+ @endif
+
+
+
+
+
                 <td>
                     <center>
-                        1.5%
+                       {{$interesMora}}
                     </center>
                 </td>
                 <td>
                     <center>
-                        1%
+                    {{$deComision}}
                     </center>
                 </td>
 
-
-                @endif
-
-
+</tr>
+ @endif
 
 
+ @if(isset($expediente->tipocreditob))
+<tr>
+                    <td>
+                    <center>
+                        {{$tipoDeCreditob}}
+                    </center>
+
+                </td>
+                <td>
+
+                    <center>
+                        ${{$montoPrestamob}}
+                    </center>
+
+                </td>
+
+                <td>
+
+                    <center>
+                        {{$mesesDePlazob}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                        {{$periodoDeGraciab}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                        {{$interesOrdinario}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                     {{$interesMora}}
+                    </center>
+                </td>
+                <td>
+                    <center>
+                  {{$deComision}}
+                    </center>
+                </td>
+
+            </tr>
+
+
+
+ @endif
+
+
+ @if(isset($expediente->tipocreditoc))
+
+
+            <tr>
+                                <td>
+                    <center>
+                        {{$tipoDeCreditoc}}
+                    </center>
+
+                </td>
+                <td>
+                    <center>
+                        ${{$montoPrestamoc}}
+                    </center>
+
+                </td>
+
+                <td>
+
+                    <center>
+                        {{$mesesDePlazoc}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                        {{$periodoDeGraciac}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                        {{$interesOrdinario}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                     {{$interesMora}}
+                    </center>
+                </td>
+                <td>
+                    <center>
+                       {{$deComision}}
+                    </center>
+                </td>
+            </tr>
+
+ @endif
+
+
+
+
+
+
+
+
+
+ @if(isset($expediente->tipocreditoc) and $idProductoCredito ==6)
+
+
+            <tr>
+                                <td>
+                    <center>
+                        {{$tipoDeCreditoc}}
+                    </center>
+
+                </td>
+                <td>
+                    <center>
+                        ${{$montoPrestamoc}}
+                    </center>
+
+                </td>
+
+                <td>
+
+                    <center>
+                        {{$mesesDePlazoc}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                        {{$periodoDeGraciac}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                        {{$interesOrdinario}}
+                    </center>
+
+                </td>
+
+                <td>
+                    <center>
+                     {{$interesMora}}
+                    </center>
+                </td>
+                <td>
+                    <center>
+                       {{$deComision}}
+                    </center>
+                </td>
+            </tr>
+
+ @endif
+
+
+<tr>
+
+                      <td>
+                    <center>
+                           <b>TOTAL</b>
+                    </center>
+                </td>
+                <td>
+                       <center>
+                 <b>${{$montoTotal}}</b>
+                    </center>
+                <td>   
+                </td>
+
+                <td>
+                </td>
+   @if ($idProductoCredito ==6)
+    <td>
+                </td>
+ @endif
+                <td>
+                </td>
+
+
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
 
 
 
@@ -779,7 +925,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         </thead>
         <tr>
             <td>{{$actividadNegocio}}</td>
-            <td> {{$destinoPrestamo}}</td>
+            <td> {{$destinoPrestamo}} {{$destinoPrestamob}} {{$destinoPrestamoc}}</td>
         </tr>
     </table>
     <br>
@@ -910,7 +1056,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
-                    Fecha de Nacimeinto
+                    Fecha de Nacimiento
                 </strong>
             </td>
             <td>{{$fechaNacimientoRepresentanteLegal}}</td>
@@ -981,7 +1127,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
 
     <table width="70%" border="1">
-        <caption> Acreditado(a) </caption>
+        <caption> Acreditado(a) y (Garante hipotecario)</caption>
         <tr>
             <td BGCOLOR="#EAE5E5">
                 <strong>
@@ -1454,7 +1600,7 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 
         <center>
         Atentamente <br> <br>
-        <strong>L.C Felipe Ignacio Ávalo Pérez </strong><br>
+        <strong>L.C Felipe Ignacio Ávalos Pérez </strong><br>
         Director
         </center>
 
@@ -1464,16 +1610,12 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
     </p>
   
 
-    <p ALIGN="justify" style="font-size: 12px">
+    <p ALIGN="right" style="font-size: 10px">
         Boulevard Jóse López Portillo No. 220-9,
-        Fracc. Las Colinas, Zacateca Zac. C.P 98098,
+        Fracc. Las Colinas, Zacateca, Zac. C.P 98098,
         Tel. 492 491 5034, Ext 36400 <br>
         www.fondoplata.zacatecas.gob.mx
     </p>
-
-
-
-
 
 
 
