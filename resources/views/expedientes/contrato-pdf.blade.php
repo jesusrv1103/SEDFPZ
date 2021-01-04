@@ -298,13 +298,37 @@ if($comisionPorApertura=="0%")
 <body>
 
 
+
+@php
+$credito=$_GET["credito"];
+if($credito=="1"){
+        $tipocredito=$expediente->tipocredito;
+        $monto=$expediente->montoa;
+        $plazo=$expediente->plazo;
+}else if($credito=="2"){
+        $tipocredito=$expediente->tipocreditob;
+        $monto=$expediente->montob;
+        $plazo=$expediente->plazob;
+}else  if($credito=="3"){
+        $tipocredito=$expediente->tipocreditoc;
+        $monto=$expediente->montoc;
+        $plazo=$expediente->plazoc;
+}else{
+        $tipocredito="";
+}
+@endphp
+
+
     <div id="footer">
         <p class="page">Page </p>
     </div>
 
+ <p align="right">
+FPZ/{{$_GET["anio"]}}/{{$_GET["numeroficio"]}}
+ </p>
     <p align="justify">
         <strong>CONTRATO PRIVADO  de
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
             "{{{$expediente->productoCredito->producto}}}",</strong> que celebran por una parte el
         <strong>HSBC México, S.A.,
             Institución de Banca Múltiple,</strong> Grupo Financiero HSBC, División Fiduciaria (antes Banco
@@ -449,7 +473,7 @@ if($comisionPorApertura=="0%")
         </strong>
         que ofrecen como garantía las propias del
         <strong>
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
 
             "{{{$expediente->productoCredito->producto}}}"</strong>.
     </p>
@@ -492,13 +516,13 @@ if($comisionPorApertura=="0%")
         solicitado y obtenido del
         <strong>Fondo Plata Zacatecas</strong> un
         <strong>
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
 
 
 
             "{{{$expediente->productoCredito->producto}}}"</strong>
-        por la cantidad de <strong>${{number_format(floatval($expediente->monto),2)}}
-            ({{$metodo->dineroEnLetras($expediente->monto)}}).</strong>
+        por la cantidad de <strong>${{number_format(floatval($monto),2)}}
+            ({{$metodo->dineroEnLetras($monto)}}).</strong>
 
 
     </p>
@@ -512,18 +536,18 @@ if($comisionPorApertura=="0%")
     <p align="justify">
         <strong> PRIMERA.- TIPO E IMPORTE DEL CRÉDITO.- EL FONDO</strong> otorga a <strong> ACREDITADO</strong>, un
         <strong>
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
 
             "{{{$expediente->productoCredito->producto}}}"
         </strong>
-        por la cantidad de <strong>${{number_format(floatval($expediente->monto),2)}}
-            ({{$metodo->dineroEnLetras($expediente->monto)}}).</strong> Dentro del límite del Crédito no se incluyen las
+        por la cantidad de <strong>${{number_format(floatval($monto),2)}}
+            ({{$metodo->dineroEnLetras($monto)}}).</strong> Dentro del límite del Crédito no se incluyen las
         comisiones, intereses y gastos que deba cubrir <strong>EL ACREDITADO</strong> con motivo del presente contrato.
     </p>
     <p align="justify">
         <strong>SEGUNDA.- DESTINO.- EL ACREDITADO</strong> se obliga a invertir el importe de
-        <strong>${{number_format(floatval($expediente->monto),2)}}
-            ({{$metodo->dineroEnLetras($expediente->monto)}})</strong> valor del crédito señalado en la cláusula primera
+        <strong>${{number_format(floatval($monto),2)}}
+            ({{$metodo->dineroEnLetras($monto)}})</strong> valor del crédito señalado en la cláusula primera
         del presente contrato de
         conformidad con lo siguiente:
     </p>
@@ -546,7 +570,7 @@ if($comisionPorApertura=="0%")
         <tr>
             <td>
                 <strong>
-                    {{$expediente->tipocredito}}
+                    {{$tipocredito}}
                     "{{{$expediente->productoCredito->producto}}}"
                 </strong>
             </td>
@@ -568,7 +592,7 @@ if($comisionPorApertura=="0%")
             </td>
             <td align="right">
                 <u>
-                    ${{number_format(floatval($expediente->monto),2)}}
+                    ${{number_format(floatval($monto),2)}}
                 </u>
 
 
@@ -582,7 +606,7 @@ if($comisionPorApertura=="0%")
                 </strong>
             </td>
             <td align="right">
-                ${{number_format(floatval($expediente->monto),2)}}</td>
+                ${{number_format(floatval($monto),2)}}</td>
         </tr>
     </table>
     <p align="justify">
@@ -687,16 +711,16 @@ if($comisionPorApertura=="0%")
         <strong>SEXTA.- PLAZO.- EL ACREDITADO</strong> pagará a <strong>EL FONDO</strong> el
 
         <strong>
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
 
             "{{{$expediente->productoCredito->producto}}}",
         </strong>
         a un plazo total de
         <strong>
-            {{$expediente->plazo}}
-            ({{$metodo->soloNumeroAletras($expediente->plazo)}}) 
+            {{$plazo}}
+            ({{$metodo->soloNumeroAletras($plazo)}}) 
             @php
-                if($expediente->gracia==0){
+                if($expediente->gracia==0 OR $expediente->graciab==0 or $expediente->graciac==0){
                     echo " meses</strong>.";
                 } else {
                     echo " meses,</strong> incluyendo dentro del plazo un
@@ -754,7 +778,7 @@ if($comisionPorApertura=="0%")
         un pagaré conforme a la
         disposición del
         <strong>
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
 
             "{{{$expediente->productoCredito->producto}}}",
         </strong>
@@ -791,7 +815,7 @@ if($comisionPorApertura=="0%")
         garantiza a <strong>
             EL FONDO</strong> el cumplimiento de las obligaciones que asumen en este contrato con las propias del
         <strong>
-            {{$expediente->tipocredito}}
+            {{$tipocredito}}
             "{{{$expediente->productoCredito->producto}}}".</strong>
     </p>
 
@@ -1104,8 +1128,8 @@ if($comisionPorApertura=="0%")
     <p align="justify">
         5.- Que <strong> EL ACREDITADO </strong> presente comprobantes de inversión por la cantidad de
 
-        <strong>${{number_format(floatval($expediente->monto),2)}}
-            ({{$metodo->dineroEnLetras($expediente->monto)}}).</strong>
+        <strong>${{number_format(floatval($monto),2)}}
+            ({{$metodo->dineroEnLetras($monto)}}).</strong>
 
         Sin incluir el pago respectivo del impuesto al valor agregado que hubiera efectuado por la misma.
     </p>
@@ -1471,9 +1495,7 @@ if($comisionPorApertura=="0%")
       <strong>  {{$nombre_solicitante}} </strong>
     </p>
 
-    @php
-        dd($nombre_solicitante);
-    @endphp
+   
 
     @php
 

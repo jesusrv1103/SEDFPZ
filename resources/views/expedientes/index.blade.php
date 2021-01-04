@@ -127,7 +127,7 @@
 <h3>Desglose Contratos de Créditos</h3>
 
             @isset($expediente->tipocredito)
-                    <label><input type="radio" name="credito" required="">    
+                    <label><input type="radio" name="credito" value="1" required="">    
                     {{$expediente->tipocredito}}
                     </label><br>
             @endisset
@@ -136,7 +136,7 @@
 
 
             @isset($expediente->tipocreditob)
-                    <label><input type="radio" name="credito" required="">    
+                    <label><input type="radio" name="credito" value="2" required="">    
                     {{$expediente->tipocreditob}}
                     </label><br>
             @endisset
@@ -144,18 +144,20 @@
 
 
             @isset($expediente->tipocreditoc)
-                    <label><input type="radio" name="credito" required="">    
+                    <label><input type="radio" name="credito" value="3" required="">    
                     {{$expediente->tipocreditoc}}
                     </label><br>
             @endisset
 
 
-Número de Oficio<br><input type="text" name="numeroficio" value="{{$expediente->numeroficio}}" required="">
+Número de Oficio<br>
+FP/<input type="text" name="anio"  size="1" value="{{date('Y')}}" maxlength="5" required="">
+/<input type="text" name="numeroficio"   size="2"  value="{{$expediente->numeroficio}}" maxlength="5" required="">
 
             </div>
 
             <div class="modal-footer">
-                      <center><input type="submit" class="btn btn-primary" value="Descargar Contrado"></center>
+                      <center><input type="submit" class="btn btn-primary" value="Descargar Contrato"></center>
             </form>
             </div>
             

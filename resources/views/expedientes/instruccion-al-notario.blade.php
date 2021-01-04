@@ -318,7 +318,17 @@ $idProductoCredito = $expediente->productoCredito->id_procredito;
 <body>
 
     <div id="content">
-        <img src="{{url('img/logo_fondo.jpg')}}" height="60px" />
+@php
+        $image = 'img/logo_fondo.jpg';
+        $imageData = base64_encode(file_get_contents($image));
+        $src = 'data:'.mime_content_type($image).';base64,'.$imageData;
+@endphp
+
+
+        <img src="{{$src}}" height="60px" />
+
+    
+    
     </div>
 
     <p ALIGN="right">
