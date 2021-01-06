@@ -65,7 +65,7 @@ class ExpedienteController extends Controller
       ->loadView('expedientes.contrato-pdf', ['expediente' => $expediente])
       ->setPaper('A4');
 
-    return $pdf->download('ejemplo.pdf');
+    return $pdf->download('Contrato_'.$expediente->nombre_solicitante.'.pdf');
   }
 
 
@@ -276,7 +276,7 @@ class ExpedienteController extends Controller
       ->setPaper('letter');
 
 
-    return $pdf->download('Instrucion ' . $expediente->nombre_solicitante . '.pdf');
+    return $pdf->download('Instrucion_'.$expediente->nombre_solicitante .'.pdf');
   }
 
 

@@ -720,7 +720,7 @@ FPZ/{{$_GET["anio"]}}/{{$_GET["numeroficio"]}}
             {{$plazo}}
             ({{$metodo->soloNumeroAletras($plazo)}}) 
             @php
-                if($expediente->gracia==0 OR $expediente->graciab==0 or $expediente->graciac==0){
+                if($expediente->gracia==0){
                     echo " meses</strong>.";
                 } else {
                     echo " meses,</strong> incluyendo dentro del plazo un
@@ -847,7 +847,7 @@ FPZ/{{$_GET["anio"]}}/{{$_GET["numeroficio"]}}
     <!--PRINCIPIO IF AVAL-->
     <!--PRINCIPIO IF AVAL-->
     <!--PRINCIPIO IF AVAL-->
-    @if( $expediente->garhipo_nombre_del_aval != "" && $expediente->garhipo_nombre_del_aval !=
+    @if($expediente->garhipo_nombre_del_aval != "" && $expediente->garhipo_nombre_del_aval !=
     $expediente->nombre_solicitante )
     <!--se tiene aval-->
     <!--se tiene aval-->
@@ -857,7 +857,7 @@ FPZ/{{$_GET["anio"]}}/{{$_GET["numeroficio"]}}
     <p>
         <strong>DÉCIMA CUARTA.- AVAL Y DEUDOR SOLIDARIO.-
             {{ $metodo->conversionNombre($expediente->garhipo_nombre_del_aval)}}
-
+</strong>
             @if($expediente->conav_nombconyugaval != "")
             y
             {{$metodo->conversionNombre($expediente->conav_nombconyugaval)}} </strong>

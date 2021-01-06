@@ -124,7 +124,7 @@
            <form action="{{route('admin.expedientes.contrato',$expediente->id_expediente)}}" method="get">
             <div class="modal-body" align="center">
 
-<h3>Desglose Contratos de Créditos</h3>
+<h2>Desglose Contratos de Créditos</h2>
 
             @isset($expediente->tipocredito)
                     <label><input type="radio" name="credito" value="1" required="">    
@@ -171,8 +171,7 @@ FP/<input type="text" name="anio"  size="1" value="{{date('Y')}}" maxlength="5" 
                    
                  @if($expediente->id_procredito!=5)    
 
-                       <center><a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-default btn-info btn-sm" role="button"><i class="fa fa-file-pdf-o text-black" title="Instrucción al notario"></i></a></center>
-
+                       <center><a href="{{route('admin.expedientes.instruccion',$expediente->id_expediente)}}" class="btn btn-primary pull-right" role="button"><i class="fa fa-file-pdf-o" title="Instrucción al notario"></i></a></center>
                     @endif
 
 
